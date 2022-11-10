@@ -9,7 +9,7 @@
     "scripts": {
         "build": "tsup",
         "dev": "tsup --watch",
-        "pub": "npm version patch && cp package.json dist && cd dist && npm publish"
+        "pub": "npm version patch && yes | cp package.json README.md dist && cd dist && npm publish"
     },
     "keywords": [
         "sskj",
