@@ -1,19 +1,4 @@
-/**
- * 是否字符串
- * @param str 字符串
- * @returns bool
- */
-const isStr = function(str){
-    return typeof str === 'string' && str !== '';
-};
-/**
- * 是否数字
- * @param str 字符串
- * @returns bool
- */
-const isNum = function(num){
-    return typeof num === 'number' && !isNaN(num);
-};
+import { isNum, isStr } from "../type";
 
 /**
  * 检查保存的key
