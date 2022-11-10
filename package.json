@@ -1,6 +1,6 @@
 {
     "name": "kjts20-tool",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "wkj",
     "repository": {
         "type": "git",
@@ -24,5 +24,7 @@
         "access": "public",
         "registry": "https://registry.npmjs.org/"
     },
-    "files": ["dist/"]
+    "files": [
+        "dist/"
+    ]
 }
