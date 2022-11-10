@@ -2,10 +2,10 @@
  * @Description: 工具类：url相关的工具
  * @Author: wkj
  * @Date: 2019-11-04 13:18:05
- * @LastEditTime: 2022-11-10 13:20:08
+ * @LastEditTime: 2022-11-10 21:08:19
  * @LastEditors: wkj wkj@kjwoo.cn
  */
-import { isObj, isStr } from "./type.utils";
+import { isObj, isStr } from "./type";
 
 //请求字符串转换对象
 export const requestStr2Obj = function (requestUrl, valAutoDecode = true) {

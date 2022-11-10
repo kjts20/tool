@@ -2,11 +2,11 @@
  * @Description: 对象工具
  * @Author: wkj
  * @Date: 2020-07-10 15:45:20
- * @LastEditTime: 2020-09-24 15:06:42
- * @LastEditors: wkj
+ * @LastEditTime: 2022-11-10 21:07:26
+ * @LastEditors: wkj wkj@kjwoo.cn
  */
-import { isArr, isFunc, isNum, isObj, isStr } from "./type.utils";
-import { urlDecode } from "./url.utils";
+import { isArr, isFunc, isNum, isObj, isStr } from "./type";
+import { urlDecode } from "./url";
 
 // map的键类型
 type TMapKeyType = string | number;

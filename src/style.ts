@@ -3,10 +3,10 @@
  * @Description: 样式转换文件
  * @Author: wkj
  * @Date: 2020-09-24 17:50:43
- * @LastEditTime: 2022-11-10 14:31:15
+ * @LastEditTime: 2022-11-10 21:08:28
  * @LastEditors: wkj wkj@kjwoo.cn
 */
-import { camelToKebab } from "./string.utils";
+import { camelToKebab } from "./string";
 
 const _addUnitAttr = ['height', 'minHeight', 'width', 'minWidth', 'padding', 'paddingTop', 'paddingBottom', 'paddingLeft', 'paddingRight', 'margin', 'marginTop', 'marginBottom', 'marginLeft', 'marginRight', 'top', 'left', 'right', 'bottom'];
 const addUnitAttr = [..._addUnitAttr, ..._addUnitAttr.map(it => camelToKebab(it)).filter(it => !_addUnitAttr.includes(it))];

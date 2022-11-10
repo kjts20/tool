@@ -2,11 +2,11 @@
  * @Description: 时间工具
  * @Author: wkj
  * @Date: 2020-07-07 11:42:45
- * @LastEditTime: 2020-09-25 13:58:41
- * @LastEditors: wkj
+ * @LastEditTime: 2022-11-10 21:08:26
+ * @LastEditors: wkj wkj@kjwoo.cn
  */
 
-import { isNum, isStr } from "./type.utils";
+import { isNum, isStr } from "./type";
 
 // 转换为时间对象
 const toDateObj = function (date) {

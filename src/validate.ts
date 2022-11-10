@@ -1,5 +1,5 @@
-import { isEmail, isPhone } from "./string.utils";
-import { isArr, isFunc, isNum, isObj, isStr, isUndefined } from "./type.utils";
+import { isEmail, isPhone } from "./string";
+import { isArr, isFunc, isNum, isObj, isStr, isUndefined } from "./type";
 
 // 对象类型
 export interface IObject {

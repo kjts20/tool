@@ -2,11 +2,11 @@
  * @Description: 字符串工具
  * @Author: wkj
  * @Date: 2020-07-08 14:27:21
- * @LastEditTime: 2020-07-11 16:48:10
- * @LastEditors: wkj
+ * @LastEditTime: 2022-11-10 21:08:23
+ * @LastEditors: wkj wkj@kjwoo.cn
  */
 import { hexMD5 } from "./lib/md5";
-import { isFunc, isStr } from "./type.utils";
+import { isFunc, isStr } from "./type";
 // 全空格
 export const allSpace = "　";
 

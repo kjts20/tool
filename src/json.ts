@@ -1,4 +1,4 @@
-import { isStr } from "./type.utils";
+import { isStr } from "./type";
 
 /**
  * 深度克隆（对象）

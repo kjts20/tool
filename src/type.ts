@@ -1,4 +1,4 @@
-import { trim } from "./string.utils";
+import { trim } from "./string";
 
 export const isFunction = function (func) {
     return typeof func === 'function';

@@ -1,4 +1,4 @@
-import { isNum } from "./type.utils";
+import { isNum } from "./type";
 
 /**
  * 将金额转换为带逗号格式

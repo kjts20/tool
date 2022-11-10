@@ -1,4 +1,4 @@
-import { isStr } from "./type.utils";
+import { isStr } from "./type";
 
 // 字符串转 ArrayBuffer
 export const str2ArrayBuffer = function (str) {
