@@ -1,6 +1,6 @@
 {
-    "name": "kjts20-tool",
-    "version": "0.0.3",
+    "name": "@kjts20/tool",
+    "version": "0.0.1",
     "description": "wkj",
     "repository": {
         "type": "git",
@@ -9,7 +9,7 @@
     "scripts": {
         "build": "tsup",
         "dev": "tsup --watch",
-        "pub": "npm version patch && npm publish"
+        "pub": "npm version patch && cp package.json dist && cd dist && npm publish"
     },
     "keywords": [
         "sskj",
@@ -25,6 +25,6 @@
         "registry": "https://registry.npmjs.org/"
     },
     "files": [
-        "dist/"
+        "dist/**/*.js"
     ]
 }

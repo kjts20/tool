@@ -1,7 +1,7 @@
 ## 时时工具包
 ### 安装方式 ##
 ````shell
-npm install @sskj/tool
+npm install @kjts20/tool
 ````
 
 ### 使用 ###
