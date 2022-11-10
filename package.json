@@ -1,0 +1,19 @@
+{
+    "name": "@sskj/tool",
+    "version": "1.0.0",
+    "description": "wkj",
+    "main": "index.ts",
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch"
+    },
+    "keywords": [
+        "sskj",
+        "工具包"
+    ],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "tsup": "^6.4.0"
+    }
+}
