@@ -1,4 +1,4 @@
-import { isUndefined } from "../utils/type.utils";
+import { isUndefined } from "../type.utils";
 import { HttpResponse } from "./http-server";
 
 // 错误函数

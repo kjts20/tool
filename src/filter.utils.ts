@@ -1,6 +1,3 @@
-import { HttpResponse } from "../lib/http-server";
-import { isUndefined } from "./type.utils";
-
 // 转为bool
 export var toBool = function (data) {
     switch (typeof data) {

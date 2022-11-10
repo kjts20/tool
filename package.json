@@ -1,11 +1,15 @@
 {
-    "name": "@sskj/tool",
-    "version": "1.0.0",
+    "name": "kjts20-tool",
+    "version": "0.0.1",
     "description": "wkj",
-    "main": "index.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kjts20/tool.git"
+    },
     "scripts": {
         "build": "tsup",
-        "dev": "tsup --watch"
+        "dev": "tsup --watch",
+        "pub": "npm version patch && npm public"
     },
     "keywords": [
         "sskj",
@@ -17,7 +21,8 @@
         "tsup": "^6.4.0"
     },
     "publishConfig": {
-      "access": "public",
-      "registry": "https://registry.npmjs.org/"
-    }
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "files": ["dist/"]
 }

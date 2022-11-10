@@ -1,6 +1,6 @@
-import { isArr, isFunc, isNum, isObj, isStr, isUndefined } from "../utils/type.utils";
-import { mergeUrl } from "../utils/url.utils";
-import { trim } from "../utils/string.utils";
+import { isArr, isFunc, isNum, isObj, isStr, isUndefined } from "../type.utils";
+import { mergeUrl } from "../url.utils";
+import { trim } from "../string.utils";
 
 // 获取请求头部
 const getHeader = function (...headers) {

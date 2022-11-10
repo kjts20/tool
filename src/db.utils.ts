@@ -1,4 +1,4 @@
-import CommonStorage,{ISetStorageOptions, IGetStorageOptions, IRemoveStorageOptions, IClearStorageOptions} from "../lib/storage";
+import CommonStorage,{ISetStorageOptions, IGetStorageOptions, IRemoveStorageOptions, IClearStorageOptions} from "./core/storage";
 
 // 保存json的key
 const saveJsonKey = function(key:number|string){
