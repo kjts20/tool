@@ -85,7 +85,7 @@ export const unifiedResponse = function (response?: IResponse) {
         httpResponse.success = false;
         httpResponse.fail = false;
         httpResponse.error = true;
-        if (isNum(code)) {
+        if (!isNum(code)) {
             httpResponse.code = 500;
         }
     } else {
