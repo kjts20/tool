@@ -1,16 +1,16 @@
-import CommonStorage,{ISetStorageOptions, IGetStorageOptions, IRemoveStorageOptions, IClearStorageOptions} from "./core/storage";
+import CommonStorage, { ISetStorageOptions, IGetStorageOptions, IRemoveStorageOptions, IClearStorageOptions } from './core/storage';
 
 // 保存json的key
-const saveJsonKey = function(key:number|string){
+const saveJsonKey = function (key: number | string) {
     return key + 'sskj-json';
 };
 
 // 保存sessionStorage
-const setSessionStorage = function(key, data){
+const setSessionStorage = function (key, data) {
     try {
-        let saveKey = key+'';
+        let saveKey = key + '';
         let saveData = data;
-        if(typeof data !== 'string'){
+        if (typeof data !== 'string') {
             saveKey = saveJsonKey(key);
             saveData = JSON.stringify(data);
         }
@@ -19,93 +19,93 @@ const setSessionStorage = function(key, data){
     } catch (err) {
         return err;
     }
-}
+};
 
 // 获取sessionStorage
-const getSessionStorage = function(key){
+const getSessionStorage = function (key) {
     const getVal = k => sessionStorage.getItem(k);
     let val = getVal(saveJsonKey(key));
-    if(typeof val === 'string'){
+    if (typeof val === 'string') {
         return JSON.parse(val);
-    }else{
+    } else {
         return getVal(key);
     }
-}
+};
 
 export default new CommonStorage({
-    setStorage(options:ISetStorageOptions){
-        const {key, data, success, fail} = options;
+    setStorage(options: ISetStorageOptions) {
+        const { key, data, success, fail } = options;
         const err = setSessionStorage(key, data);
-        if(err === null){
-            if(success){
-                success({errMsg: "setStorage:ok", err});
+        if (err === null) {
+            if (success) {
+                success({ errMsg: 'setStorage:ok', err });
             }
             return true;
-        }else{
-            if(fail){
-                fail({errMsg: '保存错误', err});
+        } else {
+            if (fail) {
+                fail({ errMsg: '保存错误', err });
             }
             return false;
         }
     },
-    setStorageSync(key:number | string, data){
+    setStorageSync(key: number | string, data) {
         const err = setSessionStorage(key, data);
-        if(err == null){
+        if (err == null) {
             return true;
-        }else{
-            console.warn("保存sessionStorage错误", err);
+        } else {
+            console.warn('保存sessionStorage错误', err);
             return false;
         }
     },
-    getStorage(options:IGetStorageOptions){
-        const {key, success, fail} = options;
+    getStorage(options: IGetStorageOptions) {
+        const { key, success, fail } = options;
         try {
             const data = getSessionStorage(key);
-            if(success){
-                success({data});
+            if (success) {
+                success({ data });
             }
             return true;
         } catch (err) {
-            if(fail){
-                fail({errMsg: '获取值错误', err});
+            if (fail) {
+                fail({ errMsg: '获取值错误', err });
             }
             return false;
         }
     },
-    getStorageSync(key:number | string){
+    getStorageSync(key: number | string) {
         try {
             return getSessionStorage(key);
         } catch (err) {
-            console.warn("获取sessionStorage错误", err);
+            console.warn('获取sessionStorage错误', err);
             return undefined;
         }
     },
-    removeStorage(options:IRemoveStorageOptions){
-        const {key, success, fail} = options;
+    removeStorage(options: IRemoveStorageOptions) {
+        const { key, success, fail } = options;
         try {
             sessionStorage.removeItem(key + '');
-            if(success){
-                success({errMsg: "removeStorage:ok"});
+            if (success) {
+                success({ errMsg: 'removeStorage:ok' });
             }
             return true;
         } catch (err) {
-            if(fail){
-                fail({errMsg: '获取值错误', err});
+            if (fail) {
+                fail({ errMsg: '获取值错误', err });
             }
             return false;
         }
-    } ,
-    clearStorage(options:IClearStorageOptions){
-        const { success, fail} = options;
+    },
+    clearStorage(options: IClearStorageOptions) {
+        const { success, fail } = options;
         try {
-            sessionStorage.clear()
-            if(success){
-                success({errMsg: "clearStorage:ok"});
+            sessionStorage.clear();
+            if (success) {
+                success({ errMsg: 'clearStorage:ok' });
             }
             return true;
         } catch (err) {
-            if(fail){
-                fail({errMsg: '获取值错误', err});
+            if (fail) {
+                fail({ errMsg: '获取值错误', err });
             }
             return false;
         }

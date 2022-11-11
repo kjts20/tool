@@ -1,4 +1,4 @@
-import { isStr } from "./type";
+import { isStr } from './type';
 
 /**
  * 深度克隆（对象）
@@ -10,7 +10,7 @@ export const deepCopy = function (obj) {
     } else {
         return obj;
     }
-}
+};
 //  json字符串转对象
 export const jsonParse = function (josnStr) {
     if (isStr(josnStr)) {
@@ -22,4 +22,4 @@ export const jsonParse = function (josnStr) {
     } else {
         return null;
     }
-}
+};

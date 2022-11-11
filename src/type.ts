@@ -1,8 +1,8 @@
-import { trim } from "./string";
+import { trim } from './string';
 
 export const isFunction = function (func) {
     return typeof func === 'function';
-}
+};
 
 // 是否所有都是undefined
 export const isUndefined = function (...args) {
@@ -20,7 +20,7 @@ export const isUndefined = function (...args) {
     } else {
         return true;
     }
-}
+};
 
 // 是否所有都是undefined或者null
 export const isUndefinedOrNull = function (...args) {
@@ -38,7 +38,7 @@ export const isUndefinedOrNull = function (...args) {
     } else {
         return true;
     }
-}
+};
 
 // 是否非空对象
 export const isObj = function (obj) {
@@ -57,23 +57,23 @@ export const isNum = function (num) {
 
 // 是否可用数字
 export const isNumStr = function (num) {
-    return /^[\d\.]+$/.test(num + "");
-}
+    return /^[\d\.]+$/.test(num + '');
+};
 
 // 是否函数
 export const isFunc = function (func) {
     return func && typeof func === 'function';
-}
+};
 
 // 是否数组
 export const isArr = function (arr) {
     return Array.isArray(arr);
-}
+};
 
 // 是否bool
 export const isBool = function (bool) {
     return typeof bool === 'boolean';
-}
+};
 
 /**
  * 生成递增或者递减数组
@@ -83,9 +83,9 @@ export const isBool = function (bool) {
  * @return {Array}
  */
 export const createArr = function (start, end, type = 'add') {
-    var arr = Array.from(new Array(end + 1).keys()).slice(start)
-    return type === 'add' ? arr : arr.reverse()
-}
+    var arr = Array.from(new Array(end + 1).keys()).slice(start);
+    return type === 'add' ? arr : arr.reverse();
+};
 
 // 获取数组长度
 export const getLen = function (data) {
@@ -97,7 +97,7 @@ export const getLen = function (data) {
         const temp = parseInt(data);
         return isNaN(temp) ? 0 : (temp + '').length;
     } else {
-        debugger
+        debugger;
         throw new Error('获取长度失败');
     }
-}
+};

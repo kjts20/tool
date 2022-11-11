@@ -25,5 +25,16 @@
     "publishConfig": {
         "access": "public",
         "registry": "https://registry.npmjs.org/"
+    },
+    "prettier":{
+        "tabWidth": 4,
+        "printWidth": 160,
+        "eslintIntegration": true,
+        "stylelintIntegration": true,
+        "singleQuote": true,
+        "semi": true,
+        "insertPragma": false,
+        "trailingComma": "none",
+        "arrowParens": "avoid"
     }
 }

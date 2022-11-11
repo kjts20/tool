@@ -4,8 +4,8 @@
  * @Date: 2020-09-24 17:50:43
  * @LastEditTime: 2020-09-24 17:53:13
  * @LastEditors: wkj
-*/
-export const toFunction = (val) => {
+ */
+export const toFunction = val => {
     if (typeof val === 'string' && val !== '') {
         try {
             return new Function('return ' + val)();
