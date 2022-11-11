@@ -10,7 +10,7 @@
     "scripts": {
         "build": "tsup",
         "dev": "tsup --watch",
-        "pub": "npm version patch && yes | cp package.json README.md dist && cd dist && npm publish"
+        "pub": "npm run build && npm version patch && yes | cp package.json README.md dist && cd dist && npm publish"
     },
     "keywords": [
         "sskj",
