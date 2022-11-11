@@ -1,6 +1,6 @@
 {
     "name": "@kjts20/tool",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "wkj",
     "miniprogram": "/",
     "repository": {
@@ -26,7 +26,7 @@
         "access": "public",
         "registry": "https://registry.npmjs.org/"
     },
-    "prettier":{
+    "prettier": {
         "tabWidth": 4,
         "printWidth": 160,
         "eslintIntegration": true,
