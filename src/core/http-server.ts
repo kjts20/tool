@@ -228,50 +228,64 @@ export default class HttpServer {
                 header: getHeader(header, that.getHeader ? that.getHeader() : {}),
                 ...requestOptions,
                 method,
-                success: function (response) {
-                    const { statusCode } = response;
-                    const res: any = response.data;
-                    if (statusCode == 200 && isObj(res)) {
-                        if (Object.keys(res).length <= 0) {
-                            // 文件流方式
-                            resolve(successResponse('arrayBuffer生成成功', res));
-                        } else {
-                            // 响应拦截 + 返回
-                            resolve(that.responseIntercept(unifiedResponse(res)));
-                        }
-                    } else {
-                        const msg = (isObj(res) ? res.msg : null) || '系统错误';
-                        reject(
-                            unifiedResponse({
-                                code: statusCode,
-                                errcode: 1,
-                                msg,
-                                data: data
-                            })
-                        );
-                    }
-                },
-                error: function (err) {
-                    reject(
-                        unifiedResponse({
-                            code: 600,
-                            errcode: 1,
-                            msg: (err && err.msg) || '系统错误',
-                            data: err
-                        })
-                    );
-                },
-                complete: function (res) {
-                    const { errMsg } = res;
-                    if (/^request:fail\s+timeout$/.test(errMsg)) {
-                        const resp = errResponse('系统错误', res);
-                        resp.msg = '网络异常';
-                        resp.timeout = true;
-                        reject(resp);
-                    }
-                }
+                ...that.toRequestResultFunc(resolve, reject, data)
             });
         });
+    }
+
+    // 结果统一处理
+    toRequestResultFunc(resolve: (res: HttpResponse) => void, reject, sendData?) {
+        const that = this;
+        const resultFilter = function (res: HttpResponse) {
+            const finalRes = that.responseIntercept(res);
+            if (finalRes && finalRes.error === false) {
+                resolve(finalRes);
+            } else {
+                reject(finalRes);
+            }
+        };
+        return {
+            success: function (response) {
+                const { statusCode } = response;
+                const res: any = response.data;
+                if (statusCode == 200 && isObj(res)) {
+                    if (Object.keys(res).length <= 0) {
+                        // 文件流方式
+                        resultFilter(successResponse('arrayBuffer生成成功', res));
+                    } else {
+                        resultFilter(unifiedResponse(res));
+                    }
+                } else {
+                    resultFilter(
+                        unifiedResponse({
+                            code: statusCode,
+                            errcode: 1,
+                            msg: (isObj(res) ? res.msg : null) || '系统错误',
+                            data: sendData
+                        })
+                    );
+                }
+            },
+            error: function (err) {
+                resultFilter(
+                    unifiedResponse({
+                        code: 600,
+                        errcode: 1,
+                        msg: (err && err.msg) || '系统错误',
+                        data: err
+                    })
+                );
+            },
+            complete: function (res) {
+                const { errMsg } = res;
+                if (/^request:fail\s+timeout$/.test(errMsg)) {
+                    const resp = errResponse('系统错误', res);
+                    resp.msg = '网络异常';
+                    resp.timeout = true;
+                    resultFilter(resp);
+                }
+            }
+        };
     }
 
     /**
@@ -298,44 +312,7 @@ export default class HttpServer {
                 name,
                 formData: data || {},
                 header: getHeader(header, that.getHeader ? that.getHeader() : {}),
-                success: function (response) {
-                    const { statusCode } = response;
-                    const resData = response.data;
-                    const res: any = isObj(resData) ? resData : JSON.parse(resData);
-                    if (statusCode === 200 && isObj(res)) {
-                        // 响应拦截 + 返回
-                        resolve(that.responseIntercept(unifiedResponse(res)));
-                    } else {
-                        const msg = (isObj(res) ? res.msg : null) || '系统错误';
-                        reject(
-                            unifiedResponse({
-                                code: statusCode,
-                                errcode: 1,
-                                msg,
-                                data: data
-                            })
-                        );
-                    }
-                },
-                fail: function (err) {
-                    reject(
-                        unifiedResponse({
-                            code: 600,
-                            errcode: 1,
-                            msg: (err && err.errMsg) || '系统错误',
-                            data: err
-                        })
-                    );
-                },
-                complete: function (res) {
-                    const { errMsg } = res;
-                    if (/^request:fail\s+timeout$/.test(errMsg)) {
-                        const resp = errResponse('系统错误', res);
-                        resp.msg = '网络异常';
-                        resp.timeout = true;
-                        reject(resp);
-                    }
-                }
+                ...that.toRequestResultFunc(resolve, reject, data)
             });
         });
     }
