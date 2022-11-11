@@ -157,8 +157,6 @@ export interface IHttpServerOptons {
     apiPrefix: string;
     // 头部信息 header
     getHeader?: () => object;
-    // 错误函数
-    error: TErrFunc;
     // 发送请求
     request: (res: IRequestOptions) => any;
     // 上传文件
@@ -170,14 +168,11 @@ export interface IHttpServerOptons {
 // 请求封装类
 export default class HttpServer {
     constructor(options: IHttpServerOptons) {
-        const { apiPrefix, host, getHeader, error, request, uploadFile, responseIntercept } = options;
+        const { apiPrefix, host, getHeader, request, uploadFile, responseIntercept } = options;
         this.apiServer = `${trim(host, '/')}/${trim(apiPrefix, '/')}`;
         this.host = host;
         if (isFunc(getHeader)) {
             this.getHeader = getHeader;
-        }
-        if (isFunc(error)) {
-            this.error = error;
         }
         this.request = request;
         this.uploadFile = uploadFile;
@@ -187,18 +182,16 @@ export default class HttpServer {
     }
 
     // 请求的地址
-    apiServer: string = '';
+    private apiServer: string = '';
     // 使用的主机
-    host: string = '';
-    // 错误函数
-    error: IHttpServerOptons['error'] = console.error;
+    private host: string = '';
     // 获取token方法
-    getHeader: IHttpServerOptons['getHeader'];
+    private getHeader: IHttpServerOptons['getHeader'];
     // 发送请求
-    request: IHttpServerOptons['request'];
-    uploadFile: IHttpServerOptons['uploadFile'];
+    private request: IHttpServerOptons['request'];
+    private uploadFile: IHttpServerOptons['uploadFile'];
     // 响应拦截
-    responseIntercept: IHttpServerOptons['responseIntercept'] = response => response;
+    private responseIntercept: IHttpServerOptons['responseIntercept'] = response => response;
 
     // 获取请求的地址
     private getRequestUrl(url) {
@@ -212,8 +205,9 @@ export default class HttpServer {
     // 统一请求
     private ajax(url: string, data: object | null, method: EMethodType, header = {}, options?) {
         return new Promise((resolve: (res: HttpResponse) => void, reject) => {
+            const that = this;
             // 请求的路径
-            let requestUrl = this.getRequestUrl(url);
+            let requestUrl = that.getRequestUrl(url);
             // 请求的数据
             let requestBody = data || {};
             if (method === EMethodType.GET) {
@@ -228,10 +222,10 @@ export default class HttpServer {
                 }
             }
             // 发起请求
-            this.request({
+            that.request({
                 url: requestUrl,
                 data: requestBody,
-                header: getHeader(header, this.getHeader ? this.getHeader() : {}),
+                header: getHeader(header, that.getHeader ? that.getHeader() : {}),
                 ...requestOptions,
                 method,
                 success: function (response) {
@@ -243,7 +237,7 @@ export default class HttpServer {
                             resolve(successResponse('arrayBuffer生成成功', res));
                         } else {
                             // 响应拦截 + 返回
-                            resolve(this.responseIntercept(unifiedResponse(res)));
+                            resolve(that.responseIntercept(unifiedResponse(res)));
                         }
                     } else {
                         const msg = (isObj(res) ? res.msg : null) || '系统错误';
@@ -290,26 +284,27 @@ export default class HttpServer {
      */
     upload(url: string, filePath, data: object | null, header = {}, options?) {
         return new Promise((resolve: (res: HttpResponse) => void, reject) => {
+            const that = this;
             const requestOptions = {
                 timeout: 5 * 60 * 1000,
                 ...(options || {})
             };
             const { name = 'file' } = requestOptions;
             delete requestOptions[name];
-            this.uploadFile({
+            that.uploadFile({
                 ...requestOptions,
-                url: this.getRequestUrl(url),
+                url: that.getRequestUrl(url),
                 filePath: isObj(filePath) ? filePath.tempFilePath || filePath.path : filePath,
                 name,
                 formData: data || {},
-                header: getHeader(header, this.getHeader ? this.getHeader() : {}),
+                header: getHeader(header, that.getHeader ? that.getHeader() : {}),
                 success: function (response) {
                     const { statusCode } = response;
                     const resData = response.data;
                     const res: any = isObj(resData) ? resData : JSON.parse(resData);
                     if (statusCode === 200 && isObj(res)) {
                         // 响应拦截 + 返回
-                        resolve(this.responseIntercept(unifiedResponse(res)));
+                        resolve(that.responseIntercept(unifiedResponse(res)));
                     } else {
                         const msg = (isObj(res) ? res.msg : null) || '系统错误';
                         reject(
