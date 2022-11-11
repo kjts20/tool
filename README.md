@@ -6,17 +6,127 @@
 npm install @kjts20/tool
 ```
 
-### 使用说明
+### 微信小程中使用指引
+
+#### 安装包
+
+```shell
+npm install @kjts20/tool
+```
+
+#### 实例化基础函数
+
+-   新建 wx.tool.ts，最为全局处理类
+
+```ts
+import { isNum, isObj, isStr } from '@kjts20/tool/type';
+const logger = wx.getRealtimeLogManager();
+
+// 记录日志
+export const sendErr = function (...args) {
+    console.warn('发送错误：', ...args);
+    logger.error(...args);
+};
+
+export const error = function (title, err: any = null, callback?, waitTime?) {
+    console.warn('error函数提醒=>', { title, err });
+    logger.warn('error函数提醒=>', title, err);
+    wx.showToast({
+        title: title || '系统开小差了～',
+        icon: 'none',
+        duration: 2500,
+        complete: () => {
+            if (typeof callback === 'function') {
+                let time = parseInt(waitTime);
+                time = isNaN(time) ? 0 : time;
+                setTimeout(() => {
+                    callback();
+                }, time);
+            }
+        }
+    });
+};
+```
+
+-   新建 http-server.ts，作为请求类
+
+```ts
+import { error } from './wx.tool';
+const host = '[host]';
+const apiPrefix = '[apiPrefix]';
+const getToken = () => '[token]';
+
+export default new HttpServer({
+    request: wx.request,
+    uploadFile: wx.uploadFile,
+    error,
+    host: host,
+    apiPrefix,
+    getHeader: () => getToken(),
+    responseIntercept(response: HttpResponse): HttpResponse {
+        if (isObj(response)) {
+            if (response.fail && response.code === 308) {
+                // gotoLoginPage();
+                throw new Error('重定向到登录页面');
+            }
+        }
+        return response;
+    }
+});
+```
+
+-   新建 storage.ts，作为仓库类
+
+```ts
+import Storage from '@kjts20/tool/core/storage';
+import { error } from './wx.tool';
+export default new Storage(
+    {
+        getStorage: wx.getStorage,
+        getStorageSync: wx.getStorageSync,
+        setStorage: wx.setStorage,
+        setStorageSync: wx.setStorageSync,
+        clearStorage: wx.clearStorage,
+        removeStorage: wx.removeStorage
+    },
+    error
+);
+```
+
+-   新建 http-filter.ts，作为过滤工具类
+
+```ts
+import { ResponseFilter } from '@kjts20/tool/core/filter';
+import { error } from './wx.tool';
+export default new ResponseFilter({
+    error
+});
+```
+
+#### 页面使用
+
+```ts
+import httpServer from '../http-server';
+import httpFilter from '../http-filter';
+import db from '../storage';
+
+// 请求分页数据
+const getPage = function (params) {
+    return httpFilter.filter(httpServer.postJson('[url]', params), responseData => {
+        // ...
+        return responseData;
+    });
+};
+// 保存缓存
+const test = function () {
+    db.setStorageSync('ttt', 1);
+    console.log('保存数据=>' + db.getStorageSync('ttt'));
+};
+```
+
+### H5 使用指引
 
 #### 根据使用平台对几个类进行初始化
-
-http-server、storage、filter 进行初始化
-
--   微信小程序中使用 http-server
-
-```TS
-
-```
 
 -   浏览器中使用 sessionStorage 实例化仓库
 
@@ -134,128 +244,4 @@ export default new CommonStorage({
         }
     }
 });
-```
-
--   微信小程序中实例化仓库
-
-```ts
-
-```
-
-### 微信小程中使用指引
-
-#### 安装包
-
-```shell
-npm install @kjts20/tool
-```
-
-#### 实例化基础函数
-
--   新建 wx.tool.ts，最为全局处理类
-
-```ts
-import { isNum, isObj, isStr } from '@kjts20/tool/type';
-const logger = wx.getRealtimeLogManager();
-
-// 记录日志
-export const sendErr = function (...args) {
-    console.warn('发送错误：', ...args);
-    logger.error(...args);
-};
-
-export const error = function (title, err: any = null, callback?, waitTime?) {
-    console.warn('error函数提醒=>', { title, err });
-    logger.warn('error函数提醒=>', title, err);
-    wx.showToast({
-        title: title || '系统开小差了～',
-        icon: 'none',
-        duration: 2500,
-        complete: () => {
-            if (typeof callback === 'function') {
-                let time = parseInt(waitTime);
-                time = isNaN(time) ? 0 : time;
-                setTimeout(() => {
-                    callback();
-                }, time);
-            }
-        }
-    });
-};
-```
-
--   新建 http-server.ts，作为请求类
-
-```ts
-import { error } from './wx.tool';
-const host = '[host]';
-const apiPrefix = '[apiPrefix]';
-const getToken = () => '[token]';
-
-export default new HttpServer({
-    request: wx.request,
-    uploadFile: wx.uploadFile,
-    error,
-    host: host,
-    apiPrefix,
-    getHeader: () => getToken(),
-    responseIntercept(response: HttpResponse): HttpResponse {
-        if (isObj(response)) {
-            if (response.fail && response.code === 308) {
-                // gotoLoginPage();
-                throw new Error('重定向到登录页面');
-            }
-        }
-        return response;
-    }
-});
-```
-
--   新建 storage.ts，作为仓库类
-
-```ts
-import Storage from '@kjts20/tool/core/storage';
-import { error } from './wx.tool';
-export default new Storage(
-    {
-        getStorage: wx.getStorage,
-        getStorageSync: wx.getStorageSync,
-        setStorage: wx.setStorage,
-        setStorageSync: wx.setStorageSync,
-        clearStorage: wx.clearStorage,
-        removeStorage: wx.removeStorage
-    },
-    error
-);
-```
-
--   新建 http-filter.ts，作为过滤工具类
-
-```ts
-import { ResponseFilter } from '@kjts20/tool/core/filter';
-import { error } from './wx.tool';
-export default new ResponseFilter({
-    error
-});
-```
-
-#### 页面使用
-
-```ts
-import httpServer from '../http-server';
-import httpFilter from '../http-filter';
-import db from '../storage';
-
-// 请求分页数据
-const getPage = function (params) {
-    return httpFilter.filter(httpServer.postJson('[url]', params), responseData => {
-        // ...
-        return responseData;
-    });
-};
-// 保存缓存
-const test = function () {
-    db.setStorageSync('ttt', 1);
-    console.log('保存数据=>' + db.getStorageSync('ttt'));
-};
 ```
