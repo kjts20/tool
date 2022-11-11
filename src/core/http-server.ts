@@ -156,7 +156,7 @@ export interface IHttpServerOptons {
     // api前缀
     apiPrefix: string;
     // 头部信息 header
-    getHeader?: () => object;
+    setHeader?: () => object;
     // 发送请求
     request: (res: IRequestOptions) => any;
     // 上传文件
@@ -168,11 +168,11 @@ export interface IHttpServerOptons {
 // 请求封装类
 export default class HttpServer {
     constructor(options: IHttpServerOptons) {
-        const { apiPrefix, host, getHeader, request, uploadFile, responseIntercept } = options;
+        const { apiPrefix, host, setHeader, request, uploadFile, responseIntercept } = options;
         this.apiServer = `${trim(host, '/')}/${trim(apiPrefix, '/')}`;
         this.host = host;
-        if (isFunc(getHeader)) {
-            this.getHeader = getHeader;
+        if (isFunc(setHeader)) {
+            this.setHeader = setHeader;
         }
         this.request = request;
         this.uploadFile = uploadFile;
@@ -186,7 +186,7 @@ export default class HttpServer {
     // 使用的主机
     private host: string = '';
     // 获取token方法
-    private getHeader: IHttpServerOptons['getHeader'];
+    private setHeader: IHttpServerOptons['setHeader'];
     // 发送请求
     private request: IHttpServerOptons['request'];
     private uploadFile: IHttpServerOptons['uploadFile'];
@@ -225,7 +225,7 @@ export default class HttpServer {
             that.request({
                 url: requestUrl,
                 data: requestBody,
-                header: getHeader(header, that.getHeader ? that.getHeader() : {}),
+                header: getHeader(header, that.setHeader ? that.setHeader() : {}),
                 ...requestOptions,
                 method,
                 ...that.toRequestResultFunc(resolve, reject, data)
@@ -311,7 +311,7 @@ export default class HttpServer {
                 filePath: isObj(filePath) ? filePath.tempFilePath || filePath.path : filePath,
                 name,
                 formData: data || {},
-                header: getHeader(header, that.getHeader ? that.getHeader() : {}),
+                header: getHeader(header, that.setHeader ? that.setHeader() : {}),
                 ...that.toRequestResultFunc(resolve, reject, data)
             });
         });
