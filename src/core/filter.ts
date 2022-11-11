@@ -13,6 +13,9 @@ export interface IHttpServerFilter {
 export class ResponseFilter {
     constructor(options: IHttpServerFilter) {
         const { error } = options;
+        if (error) {
+            this.error = error;
+        }
     }
     // 错误函数
     error: IHttpServerFilter['error'] = console.error;
