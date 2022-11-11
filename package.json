@@ -2,6 +2,7 @@
     "name": "@kjts20/tool",
     "version": "0.0.9",
     "description": "wkj",
+    "miniprogram": "/",
     "repository": {
         "type": "git",
         "url": "https://github.com/kjts20/tool.git"
