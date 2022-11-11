@@ -6,13 +6,17 @@
 npm install @kjts20/tool
 ```
 
-### 微信小程中使用指引
-
 #### 安装包
 
 ```shell
 npm install @kjts20/tool
 ```
+
+### 微信小程中使用指引
+
+#### npm 构建
+
+-   工具 -> 构建 npm
 
 #### 实例化基础函数
 

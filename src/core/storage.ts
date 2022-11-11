@@ -89,7 +89,7 @@ export default class CommonStorage {
                     this.storageApi.setStorage({
                         key: k,
                         data: data,
-                        success: ({ errMsg }) => {
+                        success() {
                             resolve(data);
                         },
                         fail: ({ errMsg }) => {
@@ -119,10 +119,10 @@ export default class CommonStorage {
                 .then(k => {
                     this.storageApi.getStorage<T>({
                         key: k,
-                        success: ({ data, errMsg }) => {
+                        success({ data, errMsg }) {
                             resolve(data);
                         },
-                        fail: ({ errMsg }) => {
+                        fail({ errMsg }) {
                             reject(errMsg);
                         }
                     });
@@ -151,10 +151,10 @@ export default class CommonStorage {
                 .then(k => {
                     this.storageApi.removeStorage({
                         key: k,
-                        success: () => {
+                        success() {
                             resolve(true);
                         },
-                        fail: ({ errMsg }) => {
+                        fail({ errMsg }) {
                             reject(errMsg);
                         }
                     });
@@ -170,10 +170,10 @@ export default class CommonStorage {
     clearStorage() {
         return new Promise((resolve, reject) => {
             this.storageApi.clearStorage({
-                success: ({ errMsg }) => {
+                success() {
                     resolve(true);
                 },
-                fail: ({ errMsg }) => {
+                fail({ errMsg }) {
                     reject(errMsg);
                 }
             });
