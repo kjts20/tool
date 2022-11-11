@@ -1,6 +1,6 @@
 {
     "name": "@kjts20/tool",
-    "version": "0.0.10",
+    "version": "0.0.21",
     "description": "wkj",
     "miniprogram": "/",
     "repository": {
@@ -10,14 +10,14 @@
     "scripts": {
         "build": "tsup",
         "dev": "tsup --watch",
-        "pub": "npm version patch && yes | cp package.json README.md dist && cd dist && npm publish"
+        "pub": "npm run build && npm version patch && yes | cp package.json README.md dist && cd dist && npm publish"
     },
     "keywords": [
         "sskj",
         "工具包"
     ],
     "author": "",
-    "license": "MIT",
+    "license": "Apache",
     "devDependencies": {
         "tsup": "^6.4.0",
         "typescript": "^4.8.4"
@@ -25,5 +25,16 @@
     "publishConfig": {
         "access": "public",
         "registry": "https://registry.npmjs.org/"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "printWidth": 160,
+        "eslintIntegration": true,
+        "stylelintIntegration": true,
+        "singleQuote": true,
+        "semi": true,
+        "insertPragma": false,
+        "trailingComma": "none",
+        "arrowParens": "avoid"
     }
 }

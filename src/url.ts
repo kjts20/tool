@@ -5,7 +5,7 @@
  * @LastEditTime: 2022-11-10 21:08:19
  * @LastEditors: wkj wkj@kjwoo.cn
  */
-import { isObj, isStr } from "./type";
+import { isStr } from './type';
 
 //请求字符串转换对象
 export const requestStr2Obj = function (requestUrl, valAutoDecode = true) {
@@ -15,7 +15,7 @@ export const requestStr2Obj = function (requestUrl, valAutoDecode = true) {
     var valueRe = /^([a-zA-Z0-9\_\_]+)=(.*?)$/;
     var paramsObj = {};
     //查看类型进行转为相应的值
-    const val2Real = (val) => {
+    const val2Real = val => {
         let intRe = /^\d+$/,
             floatRe = /^\d*\.\d*$/,
             trueRe = /^true$/i,
@@ -51,7 +51,7 @@ export const urlEncode = function (str) {
         } else {
             return encodeURIComponent(encodeStr);
         }
-    }
+    };
     try {
         const json = JSON.parse(str);
         if (json === undefined) {
@@ -151,5 +151,4 @@ export const mergeUrl = function (mainUrl, ...param: object[]) {
         const searchUrl = Object.keys(allRequest).length > 0 ? `?${obj2RequestUrl(allRequest)}` : '';
         return `${urlParts[0]}${searchUrl}${hash}`;
     }
-
 };

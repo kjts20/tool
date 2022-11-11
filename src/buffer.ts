@@ -1,4 +1,4 @@
-import { isStr } from "./type";
+import { isStr } from './type';
 
 // 字符串转 ArrayBuffer
 export const str2ArrayBuffer = function (str) {
@@ -11,11 +11,8 @@ export const str2ArrayBuffer = function (str) {
 
 // ArrayBuffer转16进度字符串示例
 export const ab2hex = function (buffer) {
-    const hexArr = Array.prototype.map.call(
-        new Uint8Array(buffer),
-        function (bit) {
-            return ('00' + bit.toString(16)).slice(-2)
-        }
-    )
+    const hexArr = Array.prototype.map.call(new Uint8Array(buffer), function (bit) {
+        return ('00' + bit.toString(16)).slice(-2);
+    });
     return hexArr.join('');
 };

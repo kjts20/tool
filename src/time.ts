@@ -6,14 +6,14 @@
  * @LastEditors: wkj wkj@kjwoo.cn
  */
 
-import { isNum, isStr } from "./type";
+import { isNum, isStr } from './type';
 
 // 转换为时间对象
 const toDateObj = function (date) {
     if (/^\d{8}$/.test(date)) {
         date = (date + '').replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3');
     } else if (/^\d{0,1}\d{3}$/.test(date)) {
-        date = new Date().getFullYear() + (date + '').replace(/^(\d{0,1})(\d)(\d{2})$/, (_, $1, $2, $3) => (`-${$1.length > 0 ? '' : '0'}${$2}-${$3}`));
+        date = new Date().getFullYear() + (date + '').replace(/^(\d{0,1})(\d)(\d{2})$/, (_, $1, $2, $3) => `-${$1.length > 0 ? '' : '0'}${$2}-${$3}`);
     }
     let newDate = new Date(date);
     if (isNaN(newDate.getTime())) {
@@ -31,11 +31,11 @@ export const toDateTime = function (date, time?, format = 'YY-MM-DD hh:mm:ss') {
         var timeS = 0;
         (time + '').replace(/^(\d+)(\d{2})$/, function (_, _h, _m) {
             var h = parseInt(_h);
-            h = isNaN(h) ? 0 : ((h >= 0 && h <= 23) ? h : 0);
-            timeS += (h * 3600);
+            h = isNaN(h) ? 0 : h >= 0 && h <= 23 ? h : 0;
+            timeS += h * 3600;
             var m = parseInt(_m);
-            m = isNaN(m) ? 0 : ((m >= 0 && m <= 59) ? m : 0);
-            timeS += (m * 60);
+            m = isNaN(m) ? 0 : m >= 0 && m <= 59 ? m : 0;
+            timeS += m * 60;
             return '';
         });
         // 处于东8区，时间快8个小时
@@ -58,7 +58,7 @@ export const date2str = function (date, format = 'YY-MM-DD hh:mm:ss') {
     if (isNaN(year)) {
         return '';
     } else {
-        let get2LenStr = (val) => (val >= 10 ? val : '0' + val);
+        let get2LenStr = val => (val >= 10 ? val : '0' + val);
         let timeStr = format
             .replace(/YY/g, year)
             .replace(/Y/g, (year + '').slice(2))
@@ -77,7 +77,7 @@ export const date2str = function (date, format = 'YY-MM-DD hh:mm:ss') {
 };
 
 //现在时间
-export const now = function (format = "YY-MM-DD") {
+export const now = function (format = 'YY-MM-DD') {
     return date2str(new Date(), format);
 };
 
@@ -97,27 +97,27 @@ export const timestamp2str = (timestamp, format) => {
 };
 
 //时间戳转日期
-export const timestamp2dateStr = (timestamp) => {
+export const timestamp2dateStr = timestamp => {
     return date2str(new Date(timestamp), 'YY-MM-DD');
 };
 
 //时间戳转日期时间
-export const timestamp2datetimeStr = (timestamp) => {
+export const timestamp2datetimeStr = timestamp => {
     return date2str(timestamp, 'YY-MM-DD hh:mm:ss');
 };
 
 //时间字符串转日期
-export const timeStr2dateStr = (timeStr) => {
+export const timeStr2dateStr = timeStr => {
     return date2str(timeStr, 'YY-MM-DD');
 };
 
 //字符串转时间戳
-export const dateStr2Timestamp = (timeStr) => {
+export const dateStr2Timestamp = timeStr => {
     return toDateObj(timeStr).getTime();
 };
 
 //时间字符串转日期
-export const timeStr2datetimeStr = (time2str) => {
+export const timeStr2datetimeStr = time2str => {
     return date2str(time2str, 'YY-MM-DD hh:mm:ss');
 };
 
@@ -127,7 +127,7 @@ export const personalize2DateStr = (timeStr, format = 'YY年MM月DD日') => {
 };
 
 //距离现在秒数
-export const toCurrentSeconds = (timeStr) => {
+export const toCurrentSeconds = timeStr => {
     return (getCurrentStamp() - dateStr2Timestamp(timeStr)) / 1000;
 };
 
@@ -139,9 +139,9 @@ const dayMilliseconds = 24 * 60 * 60 * 1000;
 
 // 日时间范围
 export const getDayRange = function (day = 0) {
-    const todayYmd = now("YY-MM-DD");
+    const todayYmd = now('YY-MM-DD');
     const range: Array<string> = [todayYmd + dayStartStr, todayYmd + dayEndStr];
-    const dayYmd = timestamp2str(getCurrentStamp() + day * dayMilliseconds, "YY-MM-DD");
+    const dayYmd = timestamp2str(getCurrentStamp() + day * dayMilliseconds, 'YY-MM-DD');
     if (day < 0) {
         // 计算过去时间，那么调整开始时间
         range[0] = dayYmd + dayStartStr;
@@ -150,6 +150,4 @@ export const getDayRange = function (day = 0) {
         range[1] = dayYmd + dayEndStr;
     }
     return range;
-}
-
-
+};

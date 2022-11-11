@@ -5,8 +5,8 @@
  * @LastEditTime: 2022-11-10 21:07:26
  * @LastEditors: wkj wkj@kjwoo.cn
  */
-import { isArr, isFunc, isNum, isObj, isStr } from "./type";
-import { urlDecode } from "./url";
+import { isArr, isFunc, isNum, isObj, isStr } from './type';
+import { urlDecode } from './url';
 
 // map的键类型
 type TMapKeyType = string | number;
@@ -39,7 +39,7 @@ export const getColumnValue = function (data, name, defaultValue?) {
                                     return defaultValue;
                                 }
                             } else {
-                                return data[key + ""] || defaultValue;
+                                return data[key + ''] || defaultValue;
                             }
                         } else {
                             return defaultValue;
@@ -84,7 +84,7 @@ export const setDictValue = function (data, name, value) {
     }
     tempData[lastName] = value;
     return data;
-}
+};
 
 //【添加】wkj通过对象获取多级结构的值（ {my: {name: wkj}} my.name = 'wkj' )
 export const getColumnValueAndRenderByName = function (name, data, render: any = null) {
@@ -136,7 +136,7 @@ export const deepClone = function <T>(obj: T): T {
 };
 
 // 字符串转json （保护转义）
-export const toJson = (str) => {
+export const toJson = str => {
     try {
         if (typeof str === 'string' && str !== '') {
             //如果需要转义的
@@ -164,7 +164,7 @@ export const getArray = function <T>(length, fill: T): Array<T> {
     let totalList = ','
         .repeat(len)
         .split(',')
-        .map((_) => fill);
+        .map(_ => fill);
     totalList.pop();
     return totalList;
 };
@@ -201,9 +201,9 @@ export const biList2Dict = function <T>(data: Array<T>, keyGenerater: (it) => nu
     // 数据处理
     if (Array.isArray(data)) {
         // 子项处理方法
-        const itHanlder = itMapHandler && isFunc(itMapHandler) ? itMapHandler : (it => it);
+        const itHanlder = itMapHandler && isFunc(itMapHandler) ? itMapHandler : it => it;
         const newDict = {};
-        data.forEach((it) => {
+        data.forEach(it => {
             const key = keyGenerater(it);
             if (isStr(key) || isNum(key)) {
                 newDict[key] = itHanlder(it);
@@ -281,19 +281,14 @@ export const getListIndex = function <T>(list: Array<T>, predicate: (it: T) => b
         }
     }
     return -1;
-}
+};
 
 // 属性去重
-export const listRemoteRepeat = function <T>(
-    data: Array<T>,
-    column: keyof T | 'id' = 'id',
-    filter: (it: T) => T = (it) => it
-) {
-    const newList = data.map((it) => filter({ ...it }));
+export const listRemoteRepeat = function <T>(data: Array<T>, column: keyof T | 'id' = 'id', filter: (it: T) => T = it => it) {
+    const newList = data.map(it => filter({ ...it }));
     const dict = list2Dict(newList, column);
     return dict2List(dict, '');
 };
-
 
 // 配置合并（后面配置覆盖前面的配置）
 export const mergeObj = function <T>(baseConfig: T, ...configs) {
@@ -386,13 +381,13 @@ export const getChangeData = function (before: object, after: object) {
  * @returns
  */
 interface IDictArrItem<T> {
-    [key: string]: Array<T>
-    [key: number]: Array<T>
-};
+    [key: string]: Array<T>;
+    [key: number]: Array<T>;
+}
 export const listGroupBy = function <T extends {}>(list: Array<T>, keyName: keyof T): IDictArrItem<T> {
     const dict: IDictArrItem<T> = {};
     if (list && list.length > 0 && isStr(keyName)) {
-        list.forEach((it) => {
+        list.forEach(it => {
             if (it) {
                 const groupKey: TMapKeyType = it[keyName] as any;
                 if (!isArr(dict[groupKey])) {
@@ -420,7 +415,7 @@ export const getListSum = function <T>(list: Array<T>, getNumFunc: (it: T) => nu
         }
     }
     return sum;
-}
+};
 
 /**
  * 获取列表中最大值
@@ -440,7 +435,7 @@ export const getListMax = function <T>(list: Array<T>, getNumFunc: (it: T) => nu
         }
     }
     return max;
-}
+};
 
 // 数组合并
 export const listConcat = function <T>(list: Array<T>, itemList: Array<T>) {
@@ -455,7 +450,7 @@ export const listConcat = function <T>(list: Array<T>, itemList: Array<T>) {
     } else {
         return list;
     }
-}
+};
 
 // 列表加法运算
 export const listAddition = function (list: Array<number>, addNum: Array<number> | number) {
@@ -468,18 +463,18 @@ export const listAddition = function (list: Array<number>, addNum: Array<number>
         }
     } else {
         for (let i = 0; i < newList.length; i++) {
-            newList[i] = (Number(newList[i]) || 0) + (Number(addNum[i]) || 0)
+            newList[i] = (Number(newList[i]) || 0) + (Number(addNum[i]) || 0);
         }
     }
     return newList;
-}
+};
 
 // 生成对象
 export const toObj = function (key, val) {
     const obj = {};
     obj[key] = val;
     return obj;
-}
+};
 
 // 获取键值
 export const getValueIndex = function (listData, findHandler: (it: any) => boolean) {
@@ -489,4 +484,4 @@ export const getValueIndex = function (listData, findHandler: (it: any) => boole
         }
     }
     return -1;
-}
+};

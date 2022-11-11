@@ -5,10 +5,10 @@
  * @LastEditTime: 2022-11-10 21:08:23
  * @LastEditors: wkj wkj@kjwoo.cn
  */
-import { hexMD5 } from "./lib/md5";
-import { isFunc, isStr } from "./type";
+import { hexMD5 } from './lib/md5';
+import { isFunc, isStr } from './type';
 // 全空格
-export const allSpace = "　";
+export const allSpace = '　';
 
 //替换前后空格获取特定的字符串
 export const trim = function (str, patternStr = '\\s', replaceStr = '') {
@@ -34,8 +34,7 @@ export const trim = function (str, patternStr = '\\s', replaceStr = '') {
 // md5加密
 export const md5 = function (str) {
     return hexMD5(str);
-}
-
+};
 
 //获取随机字符串
 export const generateRandomStr = function (len?) {
@@ -117,31 +116,31 @@ export const generateUnique = function (seed: number | string = 5, codingBits = 
 // 驼峰命名转烤串
 export const camelToKebab = function (camelStr: string) {
     // 判断是否是大驼峰
-    const isUpper = camelStr[0].charCodeAt(0) >= 65 && camelStr[0].charCodeAt(0) <= 90
-    const handleStr = camelStr.replace(/([A-Z])/g, '-$1').toLowerCase()
-    let kebabStr = handleStr
+    const isUpper = camelStr[0].charCodeAt(0) >= 65 && camelStr[0].charCodeAt(0) <= 90;
+    const handleStr = camelStr.replace(/([A-Z])/g, '-$1').toLowerCase();
+    let kebabStr = handleStr;
     if (isUpper) {
-        kebabStr = handleStr.slice(1)
+        kebabStr = handleStr.slice(1);
     }
     // 处理连续大写的情况
-    const newKebabArr: Array<string> = []
-    const kebabSplitArr = kebabStr.split('-')
+    const newKebabArr: Array<string> = [];
+    const kebabSplitArr = kebabStr.split('-');
     kebabSplitArr.forEach((item, index) => {
         if (item.length > 1) {
-            newKebabArr.push(item)
+            newKebabArr.push(item);
         } else {
-            let combineStr = ''
-            const subKebabArr = kebabSplitArr.slice(index)
+            let combineStr = '';
+            const subKebabArr = kebabSplitArr.slice(index);
             for (let i = 0; i < subKebabArr.length; i++) {
-                if (subKebabArr[i].length > 1) break
-                combineStr += subKebabArr[i]
+                if (subKebabArr[i].length > 1) break;
+                combineStr += subKebabArr[i];
             }
-            newKebabArr.push(combineStr)
-            kebabSplitArr.splice(index + 1, combineStr.length - 1)
+            newKebabArr.push(combineStr);
+            kebabSplitArr.splice(index + 1, combineStr.length - 1);
         }
-    })
-    return newKebabArr.join('-')
-}
+    });
+    return newKebabArr.join('-');
+};
 
 // 正则判断字符串格式(非空)
 const judgeFormat = function (str, re: RegExp): boolean {
@@ -150,7 +149,7 @@ const judgeFormat = function (str, re: RegExp): boolean {
             return re.test(trim(str));
         } else {
             console.error('无法校验格式=>', re, str);
-            throw new Error("正则错误，无法校验格式");
+            throw new Error('正则错误，无法校验格式');
         }
     } else {
         return false;
@@ -160,7 +159,7 @@ const judgeFormat = function (str, re: RegExp): boolean {
 // 是否电子邮件
 export const isEmail = function (str) {
     return judgeFormat(str, /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/);
-}
+};
 
 // 判断是否为手机号
 export const isPhone = function (str) {
@@ -170,5 +169,4 @@ export const isPhone = function (str) {
 // 判断是否为电话号码
 export const isTel = function (str) {
     return judgeFormat(str, /^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/);
-}
-
+};
