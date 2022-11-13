@@ -1,6 +1,6 @@
 {
     "name": "@kjts20/tool",
-    "version": "0.0.23",
+    "version": "0.0.24",
     "description": "wkj",
     "miniprogram": "dist",
     "main": "dist/index.ts",
@@ -35,5 +35,7 @@
         "trailingComma": "none",
         "arrowParens": "avoid"
     },
-    "files": ["dist"]
+    "files": [
+        "dist"
+    ]
 }
