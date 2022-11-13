@@ -120,9 +120,6 @@ export const errResponse = function (msg: string, data: any = null) {
     });
 };
 
-// 错误函数
-export type TErrFunc = (errMsg: string | number, data: any) => void;
-
 // 请求函数
 export interface IRequestOptions {
     url: string;
@@ -166,7 +163,7 @@ export interface IHttpServerOptons {
 }
 
 // 请求封装类
-export default class HttpServer {
+export class HttpServer {
     constructor(options: IHttpServerOptons) {
         const { apiPrefix, host, setHeader, request, uploadFile, responseIntercept } = options;
         this.apiServer = `${trim(host, '/')}/${trim(apiPrefix, '/')}`;

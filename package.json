@@ -2,7 +2,8 @@
     "name": "@kjts20/tool",
     "version": "0.0.23",
     "description": "wkj",
-    "miniprogram": "/",
+    "miniprogram": "dist",
+    "main": "dist/index.ts",
     "repository": {
         "type": "git",
         "url": "https://github.com/kjts20/tool.git"
@@ -10,7 +11,8 @@
     "scripts": {
         "build": "tsup",
         "dev": "tsup --watch",
-        "pub": "npm run build && npm version patch && yes | cp package.json README.md .npmrc dist && cd dist && npm publish"
+        "prepublishOnly": "npm run build",
+        "pub": "npm version patch && npm publish"
     },
     "keywords": [
         "sskj",
@@ -32,5 +34,6 @@
         "insertPragma": false,
         "trailingComma": "none",
         "arrowParens": "avoid"
-    }
+    },
+    "files": ["dist"]
 }

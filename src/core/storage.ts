@@ -1,4 +1,5 @@
 import { isNum, isStr } from '../type';
+import { TErrFunc } from './type';
 
 /**
  * 检查保存的key
@@ -56,9 +57,6 @@ export interface IClearStorageOptions {
     fail?: (res: any) => void;
 }
 
-// 错误函数
-export type TErrFunc = (errMsg: string | number, data: any) => void;
-
 // 使用api限制
 export interface IStorageApi {
     setStorage: (options: ISetStorageOptions) => void;
@@ -69,7 +67,7 @@ export interface IStorageApi {
     clearStorage: (options?: IClearStorageOptions) => void;
 }
 
-export default class CommonStorage {
+export class CommonStorage {
     constructor(api: IStorageApi, unifyErrFunc?: TErrFunc) {
         this.storageApi = api;
         if (unifyErrFunc) {

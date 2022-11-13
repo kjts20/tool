@@ -1,8 +1,6 @@
 import { isUndefined } from '../type';
 import { HttpResponse } from './http-server';
-
-// 错误函数
-export type TErrFunc = (errMsg: string | number, data: any) => void;
+import { TErrFunc } from './type';
 
 // 请求过滤参数
 export interface IHttpServerFilter {
