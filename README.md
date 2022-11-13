@@ -17,7 +17,7 @@ npm install @kjts20/tool
 -   新建 wx.tool.ts，最为全局处理类
 
 ```ts
-import { isNum, isObj, isStr } from '@kjts20/tool/type';
+import { isNum, isObj, isStr } from '@kjts20/tool';
 const logger = wx.getRealtimeLogManager();
 
 // 记录日志
@@ -49,6 +49,7 @@ export const error = function (title, err: any = null, callback?, waitTime?) {
 -   新建 http-server.ts，作为请求类
 
 ```ts
+import { HttpServer } from '@kjts20/tool';
 import { error } from './wx.tool';
 const host = '[host]';
 const apiPrefix = '[apiPrefix]';
@@ -76,7 +77,7 @@ export default new HttpServer({
 -   新建 storage.ts，作为仓库类
 
 ```ts
-import Storage from '@kjts20/tool/core/storage';
+import {Storage} from '@kjts20/tool';
 import { error } from './wx.tool';
 export default new Storage(
     {
@@ -94,7 +95,7 @@ export default new Storage(
 -   新建 http-filter.ts，作为过滤工具类
 
 ```ts
-import { ResponseFilter } from '@kjts20/tool/core/filter';
+import { ResponseFilter } from '@kjts20/tool';
 import { error } from './wx.tool';
 export default new ResponseFilter({
     error
@@ -129,7 +130,7 @@ const test = function () {
 -   浏览器中使用 sessionStorage 实例化仓库
 
 ```TS
-import CommonStorage, { ISetStorageOptions, IGetStorageOptions, IRemoveStorageOptions, IClearStorageOptions } from '@kjts20/tool/core/storage';
+import {CommonStorage ,ISetStorageOptions, IGetStorageOptions, IRemoveStorageOptions, IClearStorageOptions } from '@kjts20/tool';
 
 // 保存json的key
 const saveJsonKey = function (key: number | string) {
