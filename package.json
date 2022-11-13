@@ -3,7 +3,7 @@
     "version": "0.0.24",
     "description": "wkj",
     "miniprogram": "dist",
-    "main": "dist/index.ts",
+    "main": "dist/index.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/kjts20/tool.git"
