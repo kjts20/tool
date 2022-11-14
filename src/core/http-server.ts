@@ -127,7 +127,7 @@ export interface IRequestOptions {
     header?: object;
     timeout?: number;
     method: EMethodType;
-    sucess: (data: object) => void;
+    success: (data: object) => void;
     error: (err: any) => void;
     complete: (err: any) => void;
 }
@@ -141,7 +141,7 @@ export interface IRequestFileOptions {
     header?: object;
     timeout?: number;
     method: EMethodType;
-    sucess: (data: object) => void;
+    success: (data: object) => void;
     error: (err: any) => void;
     complete: (err: any) => void;
 }
