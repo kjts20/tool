@@ -92,7 +92,7 @@ export const unifiedResponse = function (response?: IResponse) {
         httpResponse.success = false;
         httpResponse.fail = false;
         httpResponse.error = true;
-        httpResponse.msg = '接口错误';
+        httpResponse.msg = '返回格式不正确';
     }
     if (!isStr(msg)) {
         httpResponse.msg = httpResponse.error ? '系统错误' : httpResponse.success ? 'success' : '失败';

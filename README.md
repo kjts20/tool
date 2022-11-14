@@ -124,6 +124,97 @@ const test = function () {
 ```
 
 ### H5 使用指引
+#### 使用axios初始化httpServer, utils/http-server.ts中
+```TS
+import { HttpServer, isObj, toJson } from "@kjts20/tool";
+import Axios from 'axios'
+const host = 'http://192.168.0.10:7001';
+const apiPrefix = '';
+
+export default new HttpServer({
+    request(options){
+        const {url, data, header, timeout, method, success, error, complete} = options;
+        Axios.request({
+            url, 
+            data, 
+            headers: header,
+            timeout,
+            method            
+        }).then(res=>{
+            if(isObj(res)){
+                if(success){
+                    success({
+                        ...res,
+                        statusCode: res.status
+                    });
+                }
+            }else{
+                if(error){
+                    error(res);
+                }
+            }
+           if(complete){
+                complete(res);
+           }
+        }).catch(err=>{
+            if(error){
+                error(err);
+            }
+            if(complete){
+                complete(err);
+           }
+        });
+    },
+    uploadFile(options){
+        const {url, filePath, formData, header, timeout, method, success, error, complete} = options;
+        Axios.request({
+            url, 
+            data: formData, 
+            headers: header,
+            timeout,
+            method: "POSt",        
+        }).then(res=>{
+            if(isObj(res)){
+                if(success){
+                    success({
+                        ...res,
+                        statusCode: res.status
+                    });
+                }
+            }else{
+                if(error){
+                    error(res);
+                }
+            }
+           if(complete){
+                complete(res);
+           }
+        }).catch(err=>{
+            if(error){
+                error(err);
+            }
+            if(complete){
+                complete(err);
+           }
+        });
+    },
+    host: host,
+    apiPrefix
+});
+```
+
+#### 使用next初始化请求过滤类, response-filter.ts
+``` TS
+import { ResponseFilter  } from "@kjts20/tool";
+import { Message } from '@alifd/next';
+
+export default new ResponseFilter({
+    error:(msg, err)=>{
+        Message.error(msg + '');
+        console.error("错误提示=>", err);
+    }
+});
+```
 
 #### 根据使用平台对几个类进行初始化
 
@@ -137,8 +228,8 @@ const saveJsonKey = function (key: number | string) {
     return key + 'sskj-json';
 };
 
-// 保存sessionStorage
-const setSessionStorage = function (key, data) {
+// 保存localStorage
+const setLocalStorage = function (key, data) {
     try {
         let saveKey = key + '';
         let saveData = data;
@@ -146,16 +237,16 @@ const setSessionStorage = function (key, data) {
             saveKey = saveJsonKey(key);
             saveData = JSON.stringify(data);
         }
-        sessionStorage.setItem(saveKey, saveData);
+        localStorage.setItem(saveKey, saveData);
         return null;
     } catch (err) {
         return err;
     }
 };
 
-// 获取sessionStorage
-const getSessionStorage = function (key) {
-    const getVal = k => sessionStorage.getItem(k);
+// 获取localStorage
+const getLocalStoragee = function (key) {
+    const getVal = k => localStorage.getItem(k);
     let val = getVal(saveJsonKey(key));
     if (typeof val === 'string') {
         return JSON.parse(val);
@@ -164,10 +255,11 @@ const getSessionStorage = function (key) {
     }
 };
 
-export default new CommonStorage({
+// 导出默认仓库
+export const storage =  new CommonStorage({
     setStorage(options: ISetStorageOptions) {
         const { key, data, success, fail } = options;
-        const err = setSessionStorage(key, data);
+        const err = setLocalStorage(key, data);
         if (err === null) {
             if (success) {
                 success({ errMsg: 'setStorage:ok', err });
@@ -181,7 +273,7 @@ export default new CommonStorage({
         }
     },
     setStorageSync(key: number | string, data) {
-        const err = setSessionStorage(key, data);
+        const err = setLocalStorage(key, data);
         if (err == null) {
             return true;
         } else {
@@ -192,7 +284,7 @@ export default new CommonStorage({
     getStorage(options: IGetStorageOptions) {
         const { key, success, fail } = options;
         try {
-            const data = getSessionStorage(key);
+            const data = getLocalStoragee(key);
             if (success) {
                 success({ data });
             }
@@ -206,7 +298,7 @@ export default new CommonStorage({
     },
     getStorageSync(key: number | string) {
         try {
-            return getSessionStorage(key);
+            return getLocalStoragee(key);
         } catch (err) {
             console.warn('获取sessionStorage错误', err);
             return undefined;
@@ -215,7 +307,7 @@ export default new CommonStorage({
     removeStorage(options: IRemoveStorageOptions) {
         const { key, success, fail } = options;
         try {
-            sessionStorage.removeItem(key + '');
+            localStorage.removeItem(key + '');
             if (success) {
                 success({ errMsg: 'removeStorage:ok' });
             }
@@ -230,7 +322,7 @@ export default new CommonStorage({
     clearStorage(options: IClearStorageOptions) {
         const { success, fail } = options;
         try {
-            sessionStorage.clear();
+            localStorage.clear();
             if (success) {
                 success({ errMsg: 'clearStorage:ok' });
             }
