@@ -1,0 +1,208 @@
+@use "sass:math";
+
+@mixin flex-center {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin flex-between-center {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+@mixin flex-start-end {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+@mixin flex-between-start {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+@mixin flex-end-center {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+@mixin flex-start-center {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+// 公共处理
+@mixin commonDeal {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft Yahei UI", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, SimSun, SimHei, "宋体", simsun, sans-serif;
+    @include unseledct;
+}
+
+// 一行省略
+@mixin ellipsis-single() {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+//多行省略
+@mixin ellipsis-row($row) {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: $row;
+    -webkit-box-orient: vertical;
+}
+
+//清除浮动
+@mixin clearfix {
+    content: "";
+    width: 100%;
+    height: 0;
+    display: block;
+    clear: both;
+}
+
+//垂直居中
+@mixin verticalMiddle {
+    content: "";
+    width: 0;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+// 无法选中
+@mixin unseledct {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+// 图片无法拖拽
+@mixin imgUnHandle {
+    user-drag: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+// 禁止出现滚动条
+@mixin forbidScrollbar {
+    ::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+        color: transparent;
+        @include scrollbarNoColor;
+    }
+}
+
+// 没有滚动条
+@mixin scrollbarNoColor {
+    scrollbar-3dlight-color: transparent;
+    scrollbar-darkshadow-color: transparent;
+    scrollbar-highlight-color: transparent;
+    scrollbar-shadow-color: transparent;
+    scrollbar-arrow-color: transparent;
+    scrollbar-face-color: transparent;
+    scrollbar-track-color: transparent;
+    scrollbar-base-color: transparent;
+    scroll-behavior: smooth;
+}
+
+@mixin show {
+    &[display="inline"] {
+        display: inline;
+    }
+
+    &[display="inline-block"] {
+        display: inline-block;
+    }
+
+    &:not([display="inline"]):not([display="inline-block"]) {
+        display: block;
+    }
+}
+
+@mixin initStyle {
+    float: initial !important;
+    position: initial;
+}
+
+@mixin minScrollbar {
+    @include _scrollbar(4px, 2px, 4px);
+}
+
+@mixin normalScrollbar {
+    @include _scrollbar(10px, 10px, 0);
+}
+
+@mixin scrollbar {
+    @include _scrollbar(10px, 10px, 10px);
+}
+
+@mixin _scrollbar($width, $height, $borderRadus) {
+    &::-webkit-scrollbar {
+        width: $width;
+        height: $height;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: $borderRadus;
+        -webkit-box-shadow: inset 0 0 math.div($width, 2) rgba(0, 0, 0, 0.2);
+        background: #c1c1c1;
+    }
+
+    &::-webkit-scrollbar-track {
+        border-radius: $borderRadus;
+        -webkit-box-shadow: inset 0 0 math.div($width, 2) rgba(0, 0, 0, 0.2);
+        background: #f1f1f1;
+    }
+}
+
+//动画生成
+@mixin fadeIn($time, $delay) {
+    opacity: 0;
+    visibility: hidden;
+    animation: fadeIn $time ease $delay;
+    animation-fill-mode: forwards;
+}
+
+@mixin rotate($time, $delay) {
+    animation-fill-mode: forwards;
+    transform-origin: 50% 50%;
+    animation: rotate $time infinite linear;
+}
+
+@mixin fadeOut($time, $delay) {
+    opacity: 1;
+    animation: fadeOut $time ease $delay;
+    animation-fill-mode: forwards;
+}
+
+// 安全区域
+@mixin safe-area {
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+}

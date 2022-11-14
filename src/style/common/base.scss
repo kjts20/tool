@@ -1,0 +1,610 @@
+@use 'sass:math';
+@import './mixin.scss';
+
+// 生成的class
+@mixin to-flex-class($jcv, $aiv) {
+    display: flex;
+    justify-content: $jcv;
+    align-items: $aiv;
+}
+
+// 生成公共class
+@mixin to-common-class($unit) {
+    // =========== 公共定义 ===============
+    // 方向
+    $directionList: (top, left, bottom, right);
+
+    // ==========  浮动  =========
+    .float{
+        &-left{
+            float: left;
+        }
+        &-right{
+            float: right;
+        }
+        &-clear{
+            &::after{
+                content: '';
+                width: 0;
+                height: 0;
+                display: block;
+                clear: both;
+            }
+        }
+    }
+    
+    // ============= 高度、宽度 + 最小高度、最小宽度 + 行高 =========
+    // 宽度+高度
+    @for $i from 1 through 80 {
+        $size: $i * 5;
+
+        .width--#{$size} {
+            width: calc(100% - #{$size}#{$unit}) !important;
+        }
+
+        .width-#{$size} {
+            width: #{$size}#{$unit}!important;
+        }
+
+        .min-width-#{$size} {
+            min-width: #{$size}#{$unit}!important;
+        }
+
+        .height--#{$size} {
+            height: calc(100% - #{$size}#{$unit})!important;
+        }
+
+        .height-#{$size} {
+            height: #{$size}#{$unit}!important;
+        }
+
+        .min-height-#{$size} {
+            min-height: #{$size}#{$unit}!important;
+        }
+    }
+
+    // 珊格布局
+    @for $i from 1 through 24 {
+        // 排除10倍数
+        @if (24 % $i) ==0 {
+            $size: math.div(24, $i);
+
+            .width-c#{$size} {
+                width: #{math.div($size, 24) * 100%} !important;
+            }
+
+            .min-width-c#{$size} {
+                min-width: #{math.div($size, 24) * 100%} !important;
+            }
+
+            .width--c#{$size} {
+                width: calc(#{(1 - math.div($size, 24)) * 100%}) !important;
+            }
+        }
+    }
+
+    // 宽度百分比设置（50 ~ 750）间隔： 50
+    @for $i from 1 through 20 {
+        $size: $i * 5;
+
+        .width-p#{$size} {
+            width: #{$size * 1%} !important;
+        }
+
+        .width--p#{$size} {
+            width: calc(#{(100 - $size) * 1%}) !important;
+        }
+
+        .min-width-p#{$size} {
+            min-width: #{$size * 1%} !important;
+        }
+
+        .height-p#{$size} {
+            height: #{$size * 1%} !important;
+        }
+
+        .height--p#{$size} {
+            height: calc(#{(100 - $size) * 1%}) !important;
+        }
+
+        .min-height-p#{$size} {
+            min-height: #{$size * 1%} !important;
+        }
+    }
+
+    // 行高
+    @for $i from 10 through 50 {
+        .line-#{$i} {
+            line-height: #{math.div($i, 10)};
+        }
+    }
+
+    // ========================  文本 ===============
+    .text-ellipsis {
+        @include ellipsis-single();
+
+        &-hidden {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+
+    @for $i from 1 through 10 {
+        .text-ellipsis-#{$i} {
+            @include ellipsis-row($i);
+        }
+    }
+
+    .text {
+        &-blod {
+            font-weight: bold;
+        }
+    }
+
+    $alignList: (left, right, center);
+
+    // 文字对齐方式
+    @each $align in $alignList {
+        .text-#{$align} {
+            text-align: $align;
+        }
+    }
+
+    // 加粗
+    .font-bold {
+        font-weight: bold;
+    }
+
+    // 字体大小（5倍数）
+    @for $i from 4 through 12 {
+        $size: $i * 5;
+
+        .font-#{$size} {
+            font-size: #{$size}#{$unit}!important;
+        }
+    }
+
+    // 字体大小：10 ～ 24
+    @for $i from 10 through 24 {
+        $size: $i;
+
+        // 排除10倍数
+        @if $size%10 !=0 {
+            .font-#{$size} {
+                font-size: #{$size}#{$unit}!important;
+            }
+        }
+    }
+
+    $fontColorList: (
+        3: #333,
+        6: #666,
+        9: #999,
+        'g3': #f3f3f3,
+        'g6': #f6f6f6,
+        'g9': #f9f9f9,
+        'warning': #fff7cc,
+        'white': #ffffff,
+        'danger': #f56723,
+        'link': blue
+    );
+
+    @each $size, $color in $fontColorList {
+        .color-#{$size} {
+            color: $color !important;
+        }
+
+        .bar-#{$size} {
+            @include flex-start-center;
+            color: $color !important;
+
+            &::before {
+                content: '';
+                width: #{6}#{$unit};
+                height: 0.9em;
+                display: inline-block;
+                background: #{$color};
+                margin-right: #{10}#{$unit};
+                border-radius: #{4}#{$unit};
+            }
+        }
+    }
+
+    $bgColorList: (
+        'white': #fff,
+        1: #f1f3f7,
+        3: #f3f3f3,
+        6: #f6f6f6,
+        9: #f9f9f9,
+        'transparent': transparent,
+        'warning': #fff7cc,
+        'danger': #f56723
+    );
+
+    .border {
+        &-0,
+        &-unset {
+            border: unset !important;
+        }
+    }
+
+    // 定位
+    $positionList: (relative, absolute, fixed, static);
+
+    @each $position in $positionList {
+        .position-#{$position} {
+            position: #{$position} !important;
+        }
+    }
+
+    @for $i from 0 through 100 {
+        $size: $i * 5;
+
+        .left-#{$size} {
+            left: #{$size}#{$unit};
+        }
+
+        .left-p#{$i} {
+            left: #{$i * 1%};
+        }
+
+        .right-#{$size} {
+            right: #{$size}#{$unit};
+        }
+
+        .right-p#{$i} {
+            right: #{$i * 1%};
+        }
+
+        .top-#{$size} {
+            top: #{$size}#{$unit};
+        }
+
+        .top-p#{$i} {
+            top: #{$i * 1%};
+        }
+
+        .bottom-#{$size} {
+            bottom: #{$size}#{$unit};
+        }
+
+        .bottom-p#{$i} {
+            bottom: #{$i * 1%};
+        }
+
+        .z-index-#{$i} {
+            z-index: #{$i};
+        }
+    }
+
+    @for $i from 0 through 10 {
+        .border-width-#{$i} {
+            border-width: #{$i}#{$unit}!important;
+        }
+    }
+
+    @each $name, $color in $bgColorList {
+        .bg-#{$name} {
+            background-color: #{$color} !important;
+        }
+
+        .border-#{$name} {
+            border: 1px solid #{$color};
+        }
+
+        // 边框
+        .border-h-#{$name} {
+            border-top: 1px solid #{$color};
+            border-bottom: 1px solid #{$color};
+        }
+
+        .border-v-#{$name} {
+            border-left: 1px solid #{$color};
+            border-right: 1px solid #{$color};
+        }
+
+        .border-rightp60-#{$name} {
+            position: relative;
+
+            &::after {
+                content: '';
+                width: 0;
+                height: 60%;
+                top: 20%;
+                right: 0;
+                border-right: 1px solid #{$color};
+                position: absolute;
+            }
+        }
+
+        @each $direction in $directionList {
+            .border-#{$direction}-#{$name} {
+                border-#{$direction}: 1px solid #{$color};
+            }
+        }
+    }
+
+    // 透明度
+    @for $i from 0 through 10 {
+        .opacity-#{$i} {
+            opacity: #{$i * 0.1};
+        }
+    }
+
+    // ==================  padding、margin==============
+    // 居中
+    .margin-0-auto {
+        margin: 0 auto;
+    }
+
+    // 生成内外边距样式
+    @for $i from 1 through 12 {
+        // 5,10,15~50
+        $size: $i * 5;
+
+        @each $direction in $directionList {
+            // 外边距
+            .margin-#{$direction}-#{$size} {
+                margin-#{$direction}: #{$size}#{$unit}!important;
+            }
+
+            // 内边距
+            .padding-#{$direction}-#{$size} {
+                padding-#{$direction}: #{$size}#{$unit} !important;
+            }
+        }
+
+        // 内边距
+        .margin-#{$size} {
+            margin: #{$size}#{$unit};
+        }
+
+        // 水平
+        .margin-h-#{$size} {
+            margin-left: #{$size}#{$unit};
+            margin-right: #{$size}#{$unit};
+        }
+
+        // 垂直
+        .margin-v-#{$size} {
+            margin-top: #{$size}#{$unit};
+            margin-bottom: #{$size}#{$unit};
+        }
+
+        // 内边距
+        .padding-#{$size} {
+            padding: #{$size}#{$unit};
+        }
+
+        // 水平
+        .padding-h-#{$size} {
+            padding-left: #{$size}#{$unit} !important;
+            padding-right: #{$size}#{$unit} !important;
+        }
+
+        // 垂直
+        .padding-v-#{$size} {
+            padding-top: #{$size}#{$unit} !important;
+            padding-bottom: #{$size}#{$unit} !important;
+        }
+
+        // 两边边距设置
+        @for $j from 1 through 12 {
+            $size2: $j * 5;
+
+            // 内边距
+            .padding-#{$size}-#{$size2} {
+                padding: #{$size}#{$unit} #{$size2}#{$unit};
+            }
+
+            // 外边距
+            .margin-#{$size}-#{$size2} {
+                margin: #{$size}#{$unit} #{$size2}#{$unit};
+            }
+        }
+    }
+
+    .padding {
+        &-default {
+            padding: #{10}#{$unit} #{30}#{$unit};
+        }
+
+        // 水平
+        &-h-0 {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        &-left-0 {
+            padding-left: 0 !important;
+        }
+
+        &-right-0 {
+            padding-right: 0 !important;
+        }
+
+        // 垂直
+        &-v-0 {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        &-top-0 {
+            padding-top: 0 !important;
+        }
+
+        &-bottom-0 {
+            padding-bottom: 0 !important;
+        }
+
+        &-0 {
+            padding: 0 !important;
+        }
+    }
+
+    // ============  区块 ============
+    .event {
+        // 接收事件
+        &-receive {
+            pointer-events: all;
+        }
+
+        // 拒绝事件
+        &-forbid {
+            pointer-events: none !important;
+        }
+    }
+
+    .block {
+        display: block;
+
+        &-self {
+            width: 100%;
+            height: 100%;
+        }
+
+        &-inline {
+            display: inline-block;
+        }
+    }
+
+    .border {
+        &-box {
+            box-sizing: border-box;
+        }
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .visible {
+        &-show {
+            visibility: visible;
+        }
+
+        &-hide {
+            visibility: hidden;
+        }
+    }
+
+    .overflow-hidden {
+        overflow: hidden;
+
+        &-row {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+
+    // 圆角大小( 0 ~ 50): 间隔： 5
+    @for $i from 0 through 10 {
+        .radius-#{$i * 5} {
+            overflow: hidden;
+            border-radius: #{$i * 5}#{$unit};
+        }
+
+        .radius-bottom-#{$i * 5} {
+            overflow: hidden;
+            border-bottom-left-radius: #{$i * 5}#{$unit};
+            border-bottom-right-radius: #{$i * 5}#{$unit};
+        }
+
+        .radius-top-#{$i * 5} {
+            overflow: hidden;
+            border-top-left-radius: #{$i * 5}#{$unit};
+            border-top-right-radius: #{$i * 5}#{$unit};
+        }
+    }
+
+    // 鼠标形状
+    .custor {
+        &-pointer {
+            cursor: pointer;
+        }
+        &-move {
+            cursor: move;
+        }
+    }
+
+    // =================== 旋转  =================
+    $rotateDegList: (90, 180, 45);
+    @each $deg in $rotateDegList {
+        .rotate-#{$deg} {
+            transform-origin: 50% 50%;
+            transform: rotate($deg * 1deg);
+        }
+        .rotate--#{$deg} {
+            transform-origin: 50% 50%;
+            transform: rotate(-1 * $deg * 1deg);
+        }
+    }
+
+    // ================= flex布局 ===============
+    .flex {
+        display: flex;
+
+        &-inline {
+            display: inline-flex;
+        }
+
+        // 方向
+        &-row {
+            flex-direction: row !important;
+        }
+
+        &-column {
+            flex-direction: column !important;
+        }
+
+        // 换行
+        &-nowrap {
+            flex-wrap: nowrap !important;
+        }
+
+        &-wrap {
+            flex-wrap: wrap !important;
+        }
+
+        &-stretch {
+            align-self: stretch !important;
+        }
+
+        @for $i from 1 through 10 {
+            &-#{$i} {
+                flex: #{$i};
+            }
+        }
+    }
+
+    // 定义flex组合
+    $justifyContentList: (
+        start: flex-start,
+        end: flex-end,
+        center: center,
+        around: space-around,
+        between: space-between
+    );
+    $alignItemList: (
+        start: flex-start,
+        end: flex-end,
+        center: center,
+        stretch: stretch
+    );
+
+    // 文字对齐方式
+    @each $jcK, $jcV in $justifyContentList {
+        @each $aiK, $aiV in $alignItemList {
+            @if $jcK==$aiK {
+                .flex-#{$jcK},
+                .flex-#{$jcK}-#{$aiK} {
+                    @include to-flex-class($jcV, $aiV);
+                }
+            } @else {
+                .flex-#{$jcK}-#{$aiK} {
+                    @include to-flex-class($jcV, $aiV);
+                }
+            }
+        }
+    }
+}
