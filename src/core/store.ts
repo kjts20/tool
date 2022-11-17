@@ -26,7 +26,7 @@ export class Store{
     get(key){
         const val = this.store.get(toKey(key));
         if(val !== undefined){
-            return JSON.stringify(val);
+            return JSON.parse(val);
         }else{
             return undefined;
         }
