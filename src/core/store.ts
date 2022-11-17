@@ -9,16 +9,19 @@ export class Store{
     constructor(){
         this.store = new Map();
     }
-    // 初始化数据
-    init(dataDict:object){
-        for (const key in dataDict) {
-            this.set(key, dataDict[key]);
-        }
-    }
+    
     // 设置单个数据
     set(key, value){
         this.store.set(toKey(key), JSON.stringify(value));
     }
+
+    // 初始化数据
+    sets(dataDict:object){
+        for (const key in dataDict) {
+            this.set(key, dataDict[key]);
+        }
+    }
+
     // 获取单个值
     get(key){
         const val = this.store.get(toKey(key));
@@ -30,7 +33,7 @@ export class Store{
     }
     
     // 获取仓库中所有数据
-    getAll(){
+    gets(){
         const dict = {};
         for (const key of this.store.keys) {
             dict[key] = this.get(key);
