@@ -12,7 +12,7 @@ export class Store{
 
     // 设置单个数据
     set(key, value){
-        this.store.set(toKey(key), JSON.stringify(value));
+        this.store.set(toKey(key), value);
     }
 
     // 初始化数据
@@ -24,12 +24,7 @@ export class Store{
 
     // 获取单个值
     get(key){
-        const val = this.store.get(toKey(key));
-        if(val !== undefined){
-            return JSON.parse(val);
-        }else{
-            return undefined;
-        }
+        return this.store.get(toKey(key));
     }
     
     // 获取仓库中所有数据
