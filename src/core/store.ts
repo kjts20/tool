@@ -9,7 +9,7 @@ export class Store{
     constructor(){
         this.store = new Map();
     }
-    
+
     // 设置单个数据
     set(key, value){
         this.store.set(toKey(key), JSON.stringify(value));
@@ -35,7 +35,7 @@ export class Store{
     // 获取仓库中所有数据
     gets(){
         const dict = {};
-        for (const key of this.store.keys) {
+        for (const key of this.store.keys()) {
             dict[key] = this.get(key);
         }
         return dict;
