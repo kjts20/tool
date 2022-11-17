@@ -2,6 +2,7 @@
 export * from "./core/filter";
 export * from "./core/http-server";
 export * from "./core/storage";
+export * from "./core/store";
 
 // 导出方法
 export * from "./buffer";

@@ -4,7 +4,7 @@ const toKey = function(key){
 };
 
 // 简易仓库
-export default class Store{
+export class Store{
     store; 
     constructor(){
         this.store = new Map();
