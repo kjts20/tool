@@ -1,3 +1,8 @@
+/**
+ * 等待器
+ * 1、触发事件之后，稍等片刻再执行
+ * 注： 如果上一次事件未回调，再次触发事件，那么将取消上次事件
+ */
 import { generateRandomStr } from "../string";
 import { isNum, isObj } from "../type";
 
@@ -7,11 +12,6 @@ interface IWaiter {
     options?: Object
 };
 
-/**
- * 等待器
- * 1、触发事件之后，稍等片刻再执行
- * 注： 如果上一次事件未回调，再次触发事件，那么将取消上次事件
- */
 export class WaiterMode {
     // 等待时间
     private time = 1000;

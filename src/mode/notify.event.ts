@@ -3,7 +3,7 @@ import { isArr, isFunc, isStr } from "../type";
 /**
  * 多事件订阅发布
  */
-class NotifyEvent {
+export class NotifyEvent {
     // 事件监听者字典
     private _eventListenerDict: { [eventName: string]: Array<Function> } = {};
 
@@ -80,5 +80,4 @@ class NotifyEvent {
     }
 }
 
-export default NotifyEvent;
 
