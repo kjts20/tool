@@ -468,9 +468,17 @@
         }
         
         &-hover{
+            cursor: pointer;
             &:hover {
                 box-shadow: 0 #{6}#{$unit} #{16}#{$unit} 0 rgb(0 0 0 / 15%);
                 border-color: transparent;
+            }
+            &-3{
+                cursor: pointer;
+                &:hover {
+                    box-shadow: 0 #{3}#{$unit} #{8}#{$unit} 0 rgb(0 0 0 / 15%);
+                    border-color: transparent;
+                } 
             }
         }
     }
