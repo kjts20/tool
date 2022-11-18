@@ -71,7 +71,7 @@ export class ResponseFilter {
             responsePromise
                 .then(res => {
                     const doResolve = pageData => {
-                        resolve(pageConvert(filterHanlder ? filterHanlder(res.data) : res.data));
+                        resolve(pageConvert(filterHanlder ? filterHanlder(pageData) : pageData));
                     };
                     if (res.success) {
                         doResolve(res.data);
