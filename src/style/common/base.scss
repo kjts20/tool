@@ -466,6 +466,13 @@
         &-inline {
             display: inline-block;
         }
+        
+        &-hover{
+            &:hover {
+                box-shadow: 0 #{6}#{$unit} #{16}#{$unit} 0 rgb(0 0 0 / 15%);
+                border-color: transparent;
+            }
+        }
     }
 
     .border {
@@ -488,13 +495,30 @@
         }
     }
 
-    .overflow-hidden {
-        overflow: hidden;
-
-        &-row {
+    .overflow{
+        &-hidden{
             overflow: hidden;
-            white-space: nowrap;
+            &-row {
+                overflow: hidden;
+                white-space: nowrap;
+            }
         }
+        &-x{
+            &-auto{
+                overflow-x: auto; 
+            }
+            &-hidden{
+                overflow-x: hidden; 
+            }
+        }
+        &-y{
+            &-auto{
+                overflow-y: auto; 
+            }
+            &-hidden{
+                overflow-y: hidden; 
+            }
+        } 
     }
 
     // 圆角大小( 0 ~ 50): 间隔： 5
