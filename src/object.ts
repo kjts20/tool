@@ -2,7 +2,7 @@
  * @Description: 对象工具
  * @Author: wkj
  * @Date: 2020-07-10 15:45:20
- * @LastEditTime: 2022-11-10 21:07:26
+ * @LastEditTime: 2022-11-18 11:58:04
  * @LastEditors: wkj wkj@kjwoo.cn
  */
 import { isArr, isFunc, isNum, isObj, isStr } from './type';
@@ -187,17 +187,18 @@ export const filterObj = function (obj, itemDecorate?) {
 };
 
 // 数组转换为对象
-export const list2Dict = function <T>(data: Array<T>, column: keyof T | 'id' = 'id', itMapHandler?: (it) => any) {
+export const list2Dict = function <T = any>(data: Array<T>, column: keyof T | 'id' = 'id', itMapHandler?: (it:T) => any) {
     // 字段默认是id
     if (typeof column !== 'string' || column === '') {
         console.warn('list2Dict字段不合法，已经使用默认字段id', column);
         column = 'id';
     }
+    // @ts-ignore
     return biList2Dict(data, it => it[column], itMapHandler);
 };
 
 // 数组转换为对象
-export const biList2Dict = function <T>(data: Array<T>, keyGenerater: (it) => number | string, itMapHandler?: (it) => any): any {
+export const biList2Dict = function <T = any>(data: Array<T>, keyGenerater: (it:T) => number | string, itMapHandler?: (it:T) => any): any {
     // 数据处理
     if (Array.isArray(data)) {
         // 子项处理方法
