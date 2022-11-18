@@ -11,12 +11,14 @@ export const deepCopy = function (obj) {
         return obj;
     }
 };
+
 //  json字符串转对象
 export const jsonParse = function (josnStr) {
     if (isStr(josnStr)) {
         try {
             return JSON.parse(josnStr);
         } catch (e) {
+            console.warn("转json错误=>", e);
             return null;
         }
     } else {
