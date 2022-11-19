@@ -24,6 +24,7 @@ export * from "./url";
 export * from "./validate";
 // 设计模式
 export * from "./mode/notifier.mode";
+export * from "./mode/event";
 export * from "./mode/notify.event";
 export * from "./mode/restrictor.mode";
 export * from "./mode/wait.mode";
