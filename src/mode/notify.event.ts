@@ -3,6 +3,16 @@
  */
 import { isArr, isFunc, isStr } from "../type";
 
+/**
+ * @deprecated
+ *  请使用 Event类代替
+ *  丢弃原因：
+ *      1、监听时候使用的函数内存指针保存，如果一个函数需要绑定多次情况，那么就无法做到
+ *      2、解除绑定需要传入原函数，弊端：使用匿名函数，无法解除绑定；那么函数需要声明为具名函数才能操作
+ *  推荐使用：Event代替
+ *     推荐点1、添加监听会自动生成uuid，并且不校验是否该函数是否受用过
+ *     推荐点2、解除绑定可以使用原函数也可以使用uuid
+ */
 export class NotifyEvent {
     // 事件监听者字典
     private _eventListenerDict: { [eventName: string]: Array<Function> } = {};
