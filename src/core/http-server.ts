@@ -211,7 +211,7 @@ export class HttpServer {
     }
 
     // 统一请求
-    private ajax(url: string, data: object | null, method: EMethodType, header = {}, options?) {
+    ajax(url: string, data: object | null, method: EMethodType, header = {}, options?) {
         return new Promise((resolve: (res: HttpResponse) => void, reject) => {
             const that = this;
             // 请求的路径
