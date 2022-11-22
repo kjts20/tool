@@ -2,7 +2,7 @@
  * @Description: 字符串工具
  * @Author: wkj
  * @Date: 2020-07-08 14:27:21
- * @LastEditTime: 2022-11-10 21:08:23
+ * @LastEditTime: 2022-11-22 22:46:46
  * @LastEditors: wkj wkj@kjwoo.cn
  */
 import { hexMD5 } from './lib/md5';
@@ -141,6 +141,51 @@ export const camelToKebab = function (camelStr: string) {
     });
     return newKebabArr.join('-');
 };
+
+// 首字符大写
+export const  firstUpperCase = function(str) {
+    if(isStr(str)){
+        return str.slice(0,1).toUpperCase() +str.slice(1);
+    }else{
+        return str;
+    }
+}
+
+// 首字符大写
+export const  firstLowerCase = function(str) {
+    if(isStr(str)){
+        return str.slice(0,1).toLocaleLowerCase() +str.slice(1);
+    }else{
+        return str;
+    }
+}
+
+// 下划线转驼峰
+export const lineToCamel = function(str) {
+    if(isStr(str)){
+        return str.replace(/([^_])(?:_+([^_]))/g, function ($0, $1, $2) {
+            return $1 + $2.toUpperCase();
+          });
+    }else{
+        return str;
+    }
+}
+
+// 驼峰转下划线
+export const camelToLine = function(str) {
+    if(isStr(str)){
+        let temp = str.replace(/[A-Z]/g, function (match) { 
+            return "_" + match.toLowerCase();
+        });
+        // 如果首字母是大写，执行replace时会多一个_，这里需要去掉
+        if(temp.slice(0,1) === '_'){ 
+            temp = temp.slice(1);
+        }
+        return temp;
+    }else{
+        return str;
+    }
+}
 
 // 正则判断字符串格式(非空)
 const judgeFormat = function (str, re: RegExp): boolean {
