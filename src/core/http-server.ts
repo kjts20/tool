@@ -400,7 +400,7 @@ export class HttpServer {
         }
         return this.ajax(
             url,
-            data,
+            formData,
             EMethodType.POST,
             {
                 'Content-Type': 'multipart/form-data',
