@@ -392,4 +392,21 @@ export class HttpServer {
             options
         );
     }
+
+    file(url, data = {}, options?, header = {}) {
+        let formData = new FormData();
+        for (var key in (data || {})) {
+            formData.append(key, data[key]);
+        }
+        return this.ajax(
+            url,
+            data,
+            EMethodType.POST,
+            {
+                'Content-Type': 'multipart/form-data',
+                ...(header || {})
+            },
+            options
+        );
+    }
 }
