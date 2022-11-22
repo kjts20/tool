@@ -149,9 +149,9 @@ export interface IRequestFileOptions {
 // 请求构造器的参数
 export interface IHttpServerOptons {
     // 使用的主机
-    host: string;
+    host?: string;
     // api前缀
-    apiPrefix: string;
+    apiPrefix?: string;
     // 头部信息 header
     setHeader?: () => object;
     // 发送请求
@@ -166,22 +166,32 @@ export interface IHttpServerOptons {
 export class HttpServer {
     constructor(options: IHttpServerOptons) {
         const { apiPrefix, host, setHeader, request, uploadFile, responseIntercept } = options;
-        this.apiServer = `${trim(host, '/')}/${trim(apiPrefix, '/')}`;
-        this.host = host;
+        this.setApiPrefix(apiPrefix);
+        this.setHost(host);
         if (isFunc(setHeader)) {
             this.setHeader = setHeader;
         }
-        this.request = request;
-        this.uploadFile = uploadFile;
         if (responseIntercept) {
             this.responseIntercept = responseIntercept;
         }
+        this.request = request;
+        this.uploadFile = uploadFile;
     }
 
     // 请求的地址
-    private apiServer: string = '';
+    private apiPrefix: string = '/api';
+    public setApiPrefix(apiPrefix){
+        if(typeof apiPrefix === 'string'){
+            this.apiPrefix = apiPrefix;
+        }
+    }
     // 使用的主机
     private host: string = '';
+    public setHost(host){
+        if(typeof host === 'string'){
+            this.host = host;
+        }
+    }
     // 获取token方法
     private setHeader: IHttpServerOptons['setHeader'];
     // 发送请求
@@ -195,7 +205,8 @@ export class HttpServer {
         if (/^http[s]:\/\/.*?$/g.test(url)) {
             return url;
         } else {
-            return `${trim(this.apiServer, '/')}/${trim(url, '/')}`;
+            const apiServer = `${trim(this.host, '/')}/${trim(this.apiPrefix, '/')}`;
+            return `${trim(apiServer, '/')}/${trim(url, '/')}`;
         }
     }
 
