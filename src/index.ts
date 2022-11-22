@@ -10,7 +10,6 @@ export * from "./file";
 export * from "./filter";
 export * from "./function";
 export * from "./json";
-export * from "./localStorage";
 export * from "./math";
 export * from "./money";
 export * from "./number";
