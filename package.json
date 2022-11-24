@@ -11,7 +11,7 @@
     "scripts": {
         "build:ts": "tsup",
         "build:css:browser": "sass src/style/browser.scss dist/browser.css --style=compressed --no-source-map",
-        "build:css:wx": "sass src/style/wx.scss dist/wx.css --style=compressed --no-source-map",
+        "build:css:wx": "sass src/style/wx.scss dist/wx.wxss --style=compressed --no-source-map",
         "dev": "tsup --watch",
         "build": "npm run build:ts && npm run build:css:browser && npm run build:css:wx",
         "prepublishOnly": "npm run build",
