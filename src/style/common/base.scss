@@ -21,7 +21,7 @@
     .selected {
         @include to-selected();
         &-hover:hover {
-            @include to-selected();
+            color: var(--selected-font-color);
         }
     }
 
