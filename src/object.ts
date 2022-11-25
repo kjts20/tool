@@ -2,7 +2,7 @@
  * @Description: 对象工具
  * @Author: wkj
  * @Date: 2020-07-10 15:45:20
- * @LastEditTime: 2022-11-25 12:36:29
+ * @LastEditTime: 2022-11-25 13:26:45
  * @LastEditors: wkj wkj@kjwoo.cn
  */
 import { isArr, isFunc, isNum, isObj, isStr } from './type';
@@ -223,11 +223,11 @@ export const biList2Dict = function <T = any>(data: Array<T>, keyGenerater: (it:
 };
 
 // 字典转数组
-export const dict2List = function (data, keyColumn?) {
+export const dict2List = function <T = any>(data, keyColumn?): Array<T> {
     if (Array.isArray(data)) {
         return data;
     } else if (typeof data === 'object' && data !== null) {
-        const newArr: any[] = [];
+        const newArr: Array<T> = [];
         for (const k in data) {
             const it = data[k];
             if (isObj(it)) {
