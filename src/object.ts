@@ -2,7 +2,7 @@
  * @Description: 对象工具
  * @Author: wkj
  * @Date: 2020-07-10 15:45:20
- * @LastEditTime: 2022-11-18 11:58:04
+ * @LastEditTime: 2022-11-25 12:36:29
  * @LastEditors: wkj wkj@kjwoo.cn
  */
 import { isArr, isFunc, isNum, isObj, isStr } from './type';
@@ -159,14 +159,17 @@ export const toJson = str => {
 };
 
 //获取数组
-export const getArray = function <T>(length, fill: T): Array<T> {
+export const getArray = function <T = any>(length, fillOrFillFunc?: T | ((index: number) => T)): Array<T> {
     let len = parseInt(length) || 0;
-    let totalList = ','
-        .repeat(len)
-        .split(',')
-        .map(_ => fill);
-    totalList.pop();
-    return totalList;
+    return new Array(len).fill(null).map((_, i) => {
+        if (isFunc(fillOrFillFunc)) {
+            // @ts-ignore
+            return fillOrFillFunc(i);
+        } else {
+            // 直接填充
+            return fillOrFillFunc;
+        }
+    });
 };
 
 // 过滤对象
@@ -187,7 +190,7 @@ export const filterObj = function (obj, itemDecorate?) {
 };
 
 // 数组转换为对象
-export const list2Dict = function <T = any>(data: Array<T>, column: keyof T | 'id' = 'id', itMapHandler?: (it:T) => any) {
+export const list2Dict = function <T = any>(data: Array<T>, column: keyof T | 'id' = 'id', itMapHandler?: (it: T) => any) {
     // 字段默认是id
     if (typeof column !== 'string' || column === '') {
         console.warn('list2Dict字段不合法，已经使用默认字段id', column);
@@ -198,7 +201,7 @@ export const list2Dict = function <T = any>(data: Array<T>, column: keyof T | 'i
 };
 
 // 数组转换为对象
-export const biList2Dict = function <T = any>(data: Array<T>, keyGenerater: (it:T) => number | string, itMapHandler?: (it:T) => any): any {
+export const biList2Dict = function <T = any>(data: Array<T>, keyGenerater: (it: T) => number | string, itMapHandler?: (it: T) => any): any {
     // 数据处理
     if (Array.isArray(data)) {
         // 子项处理方法
