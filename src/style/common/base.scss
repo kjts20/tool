@@ -544,6 +544,27 @@
             }
         }
     }
+    .scroll {
+        &-no {
+            overflow: hidden;
+            &-row {
+                overflow: hidden;
+                white-space: nowrap;
+            }
+        }
+        &-x {
+            overflow-x: auto;
+            &-hidden {
+                overflow-x: hidden;
+            }
+        }
+        &-y {
+            overflow-y: auto;
+            &-hidden {
+                overflow-y: hidden;
+            }
+        }
+    }
 
     // 圆角大小( 0 ~ 50): 间隔： 5
     @for $i from 0 through 10 {
