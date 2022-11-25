@@ -1,7 +1,6 @@
 @use 'sass:math';
 @import './mixin.scss';
 
-
 // 生成的class
 @mixin to-flex-class($jcv, $aiv) {
     display: flex;
@@ -9,22 +8,36 @@
     align-items: $aiv;
 }
 
+// 生成选中的样式
+@mixin to-selected {
+    background: var(--selected-bg-color);
+    color: var(--selected-font-color);
+}
+
 // 生成公共class
 @mixin to-common-class($unit) {
     // =========== 公共定义 ===============
+    // 选中
+    .selected {
+        @include to-selected();
+        &-hover:hover {
+            @include to-selected();
+        }
+    }
+
     // 方向
     $directionList: (top, left, bottom, right);
 
     // ==========  浮动  =========
-    .float{
-        &-left{
+    .float {
+        &-left {
             float: left;
         }
-        &-right{
+        &-right {
             float: right;
         }
-        &-clear{
-            &::after{
+        &-clear {
+            &::after {
                 content: '';
                 width: 0;
                 height: 0;
@@ -33,7 +46,7 @@
             }
         }
     }
-    
+
     // ============= 高度、宽度 + 最小高度、最小宽度 + 行高 =========
     // 宽度+高度
     @for $i from 1 through 80 {
@@ -44,23 +57,23 @@
         }
 
         .width-#{$size} {
-            width: #{$size}#{$unit}!important;
+            width: #{$size}#{$unit} !important;
         }
 
         .min-width-#{$size} {
-            min-width: #{$size}#{$unit}!important;
+            min-width: #{$size}#{$unit} !important;
         }
 
         .height--#{$size} {
-            height: calc(100% - #{$size}#{$unit})!important;
+            height: calc(100% - #{$size}#{$unit}) !important;
         }
 
         .height-#{$size} {
-            height: #{$size}#{$unit}!important;
+            height: #{$size}#{$unit} !important;
         }
 
         .min-height-#{$size} {
-            min-height: #{$size}#{$unit}!important;
+            min-height: #{$size}#{$unit} !important;
         }
     }
 
@@ -161,7 +174,7 @@
         $size: $i * 5;
 
         .font-#{$size} {
-            font-size: #{$size}#{$unit}!important;
+            font-size: #{$size}#{$unit} !important;
         }
     }
 
@@ -172,7 +185,7 @@
         // 排除10倍数
         @if $size%10 !=0 {
             .font-#{$size} {
-                font-size: #{$size}#{$unit}!important;
+                font-size: #{$size}#{$unit} !important;
             }
         }
     }
@@ -218,6 +231,7 @@
         3: var(--bg-3),
         6: var(--bg-6),
         9: var(--bg-9),
+        'primary': var(--selected-bg-color),
         'transparent': transparent,
         'warning': var(--color-warning),
         'danger': var(--color-danger)
@@ -281,7 +295,7 @@
 
     @for $i from 0 through 10 {
         .border-width-#{$i} {
-            border-width: #{$i}#{$unit}!important;
+            border-width: #{$i}#{$unit} !important;
         }
     }
 
@@ -347,7 +361,7 @@
         @each $direction in $directionList {
             // 外边距
             .margin-#{$direction}-#{$size} {
-                margin-#{$direction}: #{$size}#{$unit}!important;
+                margin-#{$direction}: #{$size}#{$unit} !important;
             }
 
             // 内边距
@@ -468,19 +482,19 @@
         &-inline {
             display: inline-block;
         }
-        
-        &-hover{
+
+        &-hover {
             cursor: pointer;
             &:hover {
                 box-shadow: 0 #{6}#{$unit} #{16}#{$unit} 0 rgb(0 0 0 / 15%);
                 border-color: transparent;
             }
-            &-3{
+            &-3 {
                 cursor: pointer;
                 &:hover {
                     box-shadow: 0 #{3}#{$unit} #{8}#{$unit} 0 rgb(0 0 0 / 15%);
                     border-color: transparent;
-                } 
+                }
             }
         }
     }
@@ -505,30 +519,30 @@
         }
     }
 
-    .overflow{
-        &-hidden{
+    .overflow {
+        &-hidden {
             overflow: hidden;
             &-row {
                 overflow: hidden;
                 white-space: nowrap;
             }
         }
-        &-x{
-            &-auto{
-                overflow-x: auto; 
+        &-x {
+            &-auto {
+                overflow-x: auto;
             }
-            &-hidden{
-                overflow-x: hidden; 
+            &-hidden {
+                overflow-x: hidden;
             }
         }
-        &-y{
-            &-auto{
-                overflow-y: auto; 
+        &-y {
+            &-auto {
+                overflow-y: auto;
             }
-            &-hidden{
-                overflow-y: hidden; 
+            &-hidden {
+                overflow-y: hidden;
             }
-        } 
+        }
     }
 
     // 圆角大小( 0 ~ 50): 间隔： 5
