@@ -231,7 +231,7 @@
     }
 
     // 定位
-    $positionList: (relative, absolute, fixed, static);
+    $positionList: (relative, absolute, fixed, static, sticky);
 
     @each $position in $positionList {
         .position-#{$position} {
