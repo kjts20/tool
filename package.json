@@ -16,7 +16,7 @@
         "build": "npm run build:ts && npm run build:css:browser && npm run build:css:wx",
         "prepublishOnly": "npm run build",
         "pub": "npm version patch && npm publish",
-        "test": "jest",
+        "test": "jest --watchAll",
         "test:coverage": "jest --coverage"
     },
     "keywords": [
