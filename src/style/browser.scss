@@ -16,4 +16,34 @@ html {
     --selected-font-color: #1890ff;
     color: var(--color-3);
 }
+
+// 宽度+高度
+@for $i from 0 through 20 {
+    $size: $i * 5;
+    .top-v#{$size} {
+        top: #{$size * 1vh} !important;
+    }
+    .left-v#{$size} {
+        left: #{$size * 1vw} !important;
+    }
+    .bottom-v#{$size} {
+        bottom: #{$size * 1vh} !important;
+    }
+    .right-v#{$size} {
+        right: #{$size * 1vw} !important;
+    }
+    .width-v#{$size} {
+        width: #{$size * 1vw} !important;
+    }
+    .width--v#{$size} {
+        width: #{(100 - $size) * 1vw} !important;
+    }
+    .height-v#{$size} {
+        height: #{$size * 1vh} !important;
+    }
+    .height--v#{$size} {
+        height: #{(100 - $size) * 1vh} !important;
+    }
+}
+
 @include to-common-class(px);
