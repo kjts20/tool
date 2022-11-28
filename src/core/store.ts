@@ -5,7 +5,7 @@ const toKey = function (key) {
 
 // 简易仓库
 export class Store {
-    store: Map<string, any>;
+    private store: Map<string, any>;
     constructor() {
         this.store = new Map();
     }
@@ -30,9 +30,21 @@ export class Store {
     // 获取仓库中所有数据
     gets() {
         const dict = {};
-        for (const key of this.store.keys()) {
-            dict[key] = this.get(key);
-        }
+        this.store.forEach((value, key) => {
+            dict[key] = value;
+        });
         return dict;
+    }
+    // 删除键值
+    delete(key) {
+        return this.store.delete(toKey(key));
+    }
+    // 清空
+    clear() {
+        return this.store.clear();
+    }
+    // 是否包含key
+    has(key) {
+        return this.store.has(toKey(key));
     }
 }
