@@ -80,7 +80,7 @@ export class Event {
      * @param event 事件名
      * @param args 所有参数
      */
-    emit(event, data) {
+    emit(event, ...args) {
         const listeners = this._eventListenerDict[event];
         // 通知监听者
         if (isObj(listeners)) {
@@ -88,7 +88,7 @@ export class Event {
                 const listener = listeners[uuid];
                 if (isFunc(listener)) {
                     try {
-                        listener(data);
+                        listener(...args);
                     } catch (err) {
                         console.error('函数=>', listener, '错误=>', err);
                     }
@@ -96,7 +96,7 @@ export class Event {
             }
         }
         // 发送广播消息
-        this.sendBroadcastMsg(event, data);
+        this.sendBroadcastMsg(event, args[0]);
     }
 
     /**
