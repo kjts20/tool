@@ -9,6 +9,7 @@ interface IEventListenerDict {
     [key: string]: Function;
 }
 
+// 全局对象设定
 const win = globalThis || window;
 
 export class Event {
@@ -26,9 +27,9 @@ export class Event {
                 // 创建广播
                 const broadcast = new BroadcastChannel(event);
                 channel[event] = broadcast;
-                // 消息监听机制
+                // 消息监听机制（只是发送消息，不进行广播）
                 broadcast.onmessage = function (e) {
-                    that.emit(event, e.data, e);
+                    that.sendMessage2Listeners(event, e.data, e);
                 };
             }
         }
@@ -81,6 +82,14 @@ export class Event {
      * @param args 所有参数
      */
     emit(event, ...args) {
+        // 发送消息给监听者
+        this.sendMessage2Listeners(event, ...args);
+        // 发送广播消息
+        this.sendBroadcastMsg(event, args[0]);
+    }
+
+    // 发送消息给监听者
+    protected sendMessage2Listeners(event, ...args) {
         const listeners = this._eventListenerDict[event];
         // 通知监听者
         if (isObj(listeners)) {
@@ -95,8 +104,6 @@ export class Event {
                 }
             }
         }
-        // 发送广播消息
-        this.sendBroadcastMsg(event, args[0]);
     }
 
     /**
