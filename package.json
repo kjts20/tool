@@ -51,6 +51,7 @@
         "dist"
     ],
     "dependencies": {
+        "pako": "^2.1.0",
         "sass": "^1.56.1"
     }
 }
