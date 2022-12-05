@@ -21,6 +21,7 @@ export * from './time';
 export * from './type';
 export * from './url';
 export * from './validate';
+export * from './promise';
 // 设计模式
 export * from './mode/notifier.mode';
 export * from './mode/event';
