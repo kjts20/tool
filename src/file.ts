@@ -2,7 +2,7 @@
  * @Description: 工具类：文件工具
  * @Author: wkj
  * @Date: 2019-11-04 11:20:15
- * @LastEditTime: 2022-12-03 18:56:14
+ * @LastEditTime: 2022-12-03 19:18:55
  * @LastEditors: wkj wkj@kjwoo.cn
  */
 import { btoa } from './lib/base64';
@@ -154,7 +154,7 @@ export const getBase64 = function <File extends Blob>(file: File) {
     return new Promise((resolve: (res: string) => void, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result?.toString() || '');
+        reader.onload = () => resolve(reader.result as string);
         reader.onerror = error => reject(error);
     });
 };

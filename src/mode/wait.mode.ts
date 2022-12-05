@@ -3,14 +3,14 @@
  * 1、触发事件之后，稍等片刻再执行
  * 注： 如果上一次事件未回调，再次触发事件，那么将取消上次事件
  */
-import { generateRandomStr } from "../string";
-import { isNum, isObj } from "../type";
+import { generateRandomStr } from '../string';
+import { isNum, isObj } from '../type';
 
 interface IWaiter {
-    uuid?: string,
-    callback: Function,
-    options?: Object
-};
+    uuid?: string;
+    callback: Function;
+    options?: Object;
+}
 
 export class WaiterMode {
     // 等待时间
@@ -25,8 +25,6 @@ export class WaiterMode {
         this.time = isNum(waitTime) ? waitTime : 1000;
         if (typeof callback === 'function') {
             this.addWaiter({ callback });
-        } else {
-            console.warn('没有通知函数，之后记得绑定哦');
         }
     }
 
@@ -45,7 +43,6 @@ export class WaiterMode {
     }
     public removeWaiter(uuid: string) {
         delete this.Waiters[uuid];
-        console.log('已经移除通知者', uuid);
     }
 
     // 发送消息
@@ -56,10 +53,13 @@ export class WaiterMode {
                 for (const uuid in this.Waiters) {
                     const { callback, options } = this.Waiters[uuid] || {};
                     if (typeof callback === 'function') {
-                        callback({
-                            interval: this.time,
-                            ...(isObj(options) ? options : {}),
-                        }, ...messages);
+                        callback(
+                            {
+                                interval: this.time,
+                                ...(isObj(options) ? options : {})
+                            },
+                            ...messages
+                        );
                     }
                 }
             }, this.time);
