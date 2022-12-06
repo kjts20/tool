@@ -482,6 +482,9 @@
         &-inline {
             display: inline-block;
         }
+        &-hidden {
+            display: none !important;
+        }
 
         &-hover {
             cursor: pointer;
@@ -503,10 +506,6 @@
         &-box {
             box-sizing: border-box;
         }
-    }
-
-    .hidden {
-        display: none;
     }
 
     .visible {
