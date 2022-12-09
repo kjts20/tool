@@ -1,3 +1,5 @@
+import { Event } from '../mode/event';
+
 // 生成保存的key
 const toKey = function (key) {
     return key + '';
@@ -6,13 +8,21 @@ const toKey = function (key) {
 // 简易仓库
 export class Store {
     private store: Map<string, any>;
+    event: Event;
     constructor() {
         this.store = new Map();
+        // 事件部分
+        this.event = new Event();
     }
+
+    // 生成保存的key值
+    toKey;
 
     // 设置单个数据
     set(key, value) {
-        this.store.set(toKey(key), value);
+        const saveKey = toKey(key);
+        this.store.set(saveKey, value);
+        this.event.emit(saveKey, value);
     }
 
     // 初始化数据
@@ -35,6 +45,7 @@ export class Store {
         });
         return dict;
     }
+
     // 删除键值
     delete(key) {
         return this.store.delete(toKey(key));

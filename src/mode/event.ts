@@ -11,42 +11,58 @@ interface IEventListenerDict {
 
 // 全局对象设定
 const win = globalThis || window;
-
+// 介质（通知媒介）
+export enum EMedium {
+    // 开始广播效果，可以在页面之间监听
+    PAGE,
+    // 在类之间事件有效
+    CLASS
+}
 export class Event {
+    constructor(medium: EMedium = EMedium.CLASS) {
+        this.medium = medium;
+    }
+    private medium: EMedium;
     // 事件监听者字典
     private _eventListenerDict: { [eventName: string]: IEventListenerDict } = {};
     // 事件广播
     private _broadcastChannelDict: { [eventName: string]: BroadcastChannel } = {};
     // 添加广播频道
     private addBroadcastChannel(event: string) {
-        const that = this;
-        const useBroadcastChannel = win?.BroadcastChannel;
-        if (useBroadcastChannel) {
-            const channel = this._broadcastChannelDict;
-            if (!channel[event]) {
-                // 创建广播
-                const broadcast = new BroadcastChannel(event);
-                channel[event] = broadcast;
-                // 消息监听机制（只是发送消息，不进行广播）
-                broadcast.onmessage = function (e) {
-                    that.sendMessage2Listeners(event, e.data, e);
-                };
+        if (this.medium === EMedium.PAGE) {
+            const that = this;
+            const useBroadcastChannel = win?.BroadcastChannel;
+            if (useBroadcastChannel) {
+                const channel = this._broadcastChannelDict;
+                if (!channel[event]) {
+                    // 创建广播
+                    const broadcast = new BroadcastChannel(event);
+                    channel[event] = broadcast;
+                    // 消息监听机制（只是发送消息，不进行广播）
+                    broadcast.onmessage = function (e) {
+                        that.sendMessage2Listeners(event, e.data, e);
+                    };
+                }
             }
         }
     }
     // 移除广播频道
     private removeBroadcastChannel(event: string) {
-        const channel = this._broadcastChannelDict;
-        if (!channel[event]) {
-            delete channel[event];
+        if (this.medium === EMedium.PAGE) {
+            const channel = this._broadcastChannelDict;
+            if (!channel[event]) {
+                delete channel[event];
+            }
         }
     }
     private sendBroadcastMsg(event: string, msg: any) {
-        const useBroadcastChannel = win?.BroadcastChannel;
-        if (useBroadcastChannel) {
-            const broadcast = this._broadcastChannelDict?.[event];
-            if (broadcast) {
-                broadcast.postMessage(msg);
+        if (this.medium === EMedium.PAGE) {
+            const useBroadcastChannel = win?.BroadcastChannel;
+            if (useBroadcastChannel) {
+                const broadcast = this._broadcastChannelDict?.[event];
+                if (broadcast) {
+                    broadcast.postMessage(msg);
+                }
             }
         }
     }
