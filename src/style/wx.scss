@@ -1,18 +1,5 @@
 @import './common/base.scss';
 page {
-    --color-3: #333333;
-    --color-6: #666666;
-    --color-9: #999999;
-    --bg-1: #f1f3f7;
-    --bg-3: #f3f3f3;
-    --bg-6: #f6f6f6;
-    --bg-9: #f9f9f9;
-    --color-warning: #fff7cc;
-    --color-white: #ffffff;
-    --color-danger: #f56723;
-    --color-link: rgb(57, 165, 232);
-    --color-primary: #1890ff;
-    --selected-bg-color: #e6f7ff;
-    --selected-font-color: #1890ff;
+    color: var(--color-3, #333);
 }
 @include to-common-class(rpx);
