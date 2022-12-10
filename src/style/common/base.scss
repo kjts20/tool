@@ -227,11 +227,11 @@
 
     $bgColorList: (
         'white': var(--color-white, #ffffff),
-        1: var(--bg-1, '#f1f1f1'),
-        3: var(--bg-3, '#f3f3f3'),
-        6: var(--bg-6, '#f6f6f6'),
-        9: var(--bg-9, '#f9f9f9'),
-        'd': var(--bg-d, '#dcdee3'),
+        1: var(--bg-1, #f1f1f1),
+        3: var(--bg-3, #f3f3f3),
+        6: var(--bg-6, #f6f6f6),
+        9: var(--bg-9, #f9f9f9),
+        'd': var(--bg-d, #dcdee3),
         'primary': var(--selected-bg-color, #1890ff),
         'transparent': transparent,
         'warning': var(--color-warning, #fff7cc),
