@@ -2,7 +2,7 @@
  * @Description: 对象工具
  * @Author: wkj
  * @Date: 2020-07-10 15:45:20
- * @LastEditTime: 2022-11-25 13:26:45
+ * @LastEditTime: 2022-12-21 11:37:43
  * @LastEditors: wkj wkj@kjwoo.cn
  */
 import { isArr, isFunc, isNum, isObj, isStr } from './type';
@@ -224,18 +224,24 @@ export const biList2Dict = function <T = any>(data: Array<T>, keyGenerater: (it:
 
 // 字典转数组
 export const dict2List = function <T = any>(data, keyColumn?): Array<T> {
+    return biDict2List(data, (it, key) => {
+        if (isObj(it)) {
+            if (keyColumn) {
+                it[keyColumn] = key;
+            }
+        }
+        return it;
+    });
+};
+
+// 字典转数组
+export const biDict2List = function <T = any, R = any>(data, itMapHandler?: (it: T, key: string) => R): Array<R> {
     if (Array.isArray(data)) {
         return data;
     } else if (typeof data === 'object' && data !== null) {
-        const newArr: Array<T> = [];
+        const newArr: Array<R> = [];
         for (const k in data) {
-            const it = data[k];
-            if (isObj(it)) {
-                if (keyColumn) {
-                    it[keyColumn] = k;
-                }
-            }
-            newArr.push(it);
+            newArr.push(itMapHandler(data[k], k));
         }
         return newArr;
     } else {
