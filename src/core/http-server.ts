@@ -6,7 +6,7 @@ import { trim } from '../string';
 const getHeader = function (...headers) {
     let useHeader = {};
     for (const header of headers) {
-        useHeader = { ...(isObj(header) ? header : {}) };
+        useHeader = { ...useHeader, ...(isObj(header) ? header : {}) };
     }
     return useHeader;
 };
@@ -180,15 +180,15 @@ export class HttpServer {
 
     // 请求的地址
     private apiPrefix: string = '/api';
-    public setApiPrefix(apiPrefix){
-        if(typeof apiPrefix === 'string'){
+    public setApiPrefix(apiPrefix) {
+        if (typeof apiPrefix === 'string') {
             this.apiPrefix = apiPrefix;
         }
     }
     // 使用的主机
     private host: string = '';
-    public setHost(host){
-        if(typeof host === 'string'){
+    public setHost(host) {
+        if (typeof host === 'string') {
             this.host = host;
         }
     }
@@ -395,7 +395,7 @@ export class HttpServer {
 
     file(url, data = {}, options?, header = {}) {
         let formData = new FormData();
-        for (var key in (data || {})) {
+        for (var key in data || {}) {
             formData.append(key, data[key]);
         }
         return this.ajax(
