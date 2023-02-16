@@ -202,7 +202,7 @@ export class HttpServer {
 
     // 获取请求的地址
     private getRequestUrl(url) {
-        if (/^http[s]:\/\/.*?$/g.test(url)) {
+        if (/^http[s]{0,1}:\/\/.*?$/.test(trim(url))) {
             return url;
         } else {
             const apiServer = `${trim(this.host, '/')}/${trim(this.apiPrefix, '/')}`;
