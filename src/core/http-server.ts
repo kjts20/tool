@@ -251,7 +251,7 @@ export class HttpServer {
     }
 
     // 结果统一处理
-    toRequestResultFunc(resolve: (res: HttpResponse) => void, reject, sendData?) {
+    private toRequestResultFunc(resolve: (res: HttpResponse) => void, reject, sendData?) {
         const that = this;
         const resultFilter = function (res: HttpResponse) {
             const finalRes = that.responseIntercept(res);
