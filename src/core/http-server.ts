@@ -147,7 +147,7 @@ export interface IRequestFileOptions {
 }
 
 // 请求构造器的参数
-export interface IHttpServerOptons {
+export interface IHttpServerOptions {
     // 使用的主机
     host?: string;
     // api前缀
@@ -164,7 +164,7 @@ export interface IHttpServerOptons {
 
 // 请求封装类
 export class HttpServer {
-    constructor(options: IHttpServerOptons) {
+    constructor(options: IHttpServerOptions) {
         const { apiPrefix, host, setHeader, request, uploadFile, responseIntercept } = options;
         this.setApiPrefix(apiPrefix);
         this.setHost(host);
@@ -193,12 +193,12 @@ export class HttpServer {
         }
     }
     // 获取token方法
-    private setHeader: IHttpServerOptons['setHeader'];
+    private setHeader: IHttpServerOptions['setHeader'];
     // 发送请求
-    private request: IHttpServerOptons['request'];
-    private uploadFile: IHttpServerOptons['uploadFile'];
+    private request: IHttpServerOptions['request'];
+    private uploadFile: IHttpServerOptions['uploadFile'];
     // 响应拦截
-    private responseIntercept: IHttpServerOptons['responseIntercept'] = response => response;
+    private responseIntercept: IHttpServerOptions['responseIntercept'] = response => response;
 
     // 获取请求的地址
     private getRequestUrl(url) {
@@ -207,6 +207,15 @@ export class HttpServer {
         } else {
             const apiServer = `${trim(this.host, '/')}/${trim(this.apiPrefix, '/')}`;
             return `${trim(apiServer, '/')}/${trim(url, '/')}`;
+        }
+    }
+
+    // 设置header
+    setHeaderFunc(setHeader: IHttpServerOptions['setHeader']) {
+        if (isFunc(setHeader)) {
+            this.setHeader = setHeader;
+        } else {
+            console.error('设置Header信息函数错误', setHeader);
         }
     }
 
