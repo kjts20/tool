@@ -1,5 +1,5 @@
 // 导出核心库
-export * from './core/filter';
+export * from './core/http-filter';
 export * from './core/http-server';
 export * from './core/storage';
 export * from './core/store';

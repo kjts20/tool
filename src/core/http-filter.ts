@@ -1,12 +1,12 @@
-import { isArr, isUndefined } from '../type';
-import { HttpResponse,IPageDataType } from './http-server';
+import { isArr, isFunc, isUndefined } from '../type';
+import { HttpResponse, IPageDataType } from './http-server';
 import { TErrFunc } from './type';
 
 // 分页过滤数据
 export type TPageDataFilter<Item = any> = IPageDataType<Item> & {
-    hasBeenLoad: boolean,
-    isHasMore: boolean,
-    errMsg?:string
+    hasBeenLoad: boolean;
+    isHasMore: boolean;
+    errMsg?: string;
 };
 
 // 请求过滤参数
@@ -15,7 +15,7 @@ export interface IHttpServerFilter {
 }
 
 // 请求分页数据->过滤分页数据
-export const pageConvert = function<ItemType = any>(pageData: IPageDataType<ItemType>):TPageDataFilter<ItemType>{
+export const pageConvert = function <ItemType = any>(pageData: IPageDataType<ItemType>): TPageDataFilter<ItemType> {
     const _pageData = pageData || {
         data: [],
         pageSize: 10,
@@ -26,15 +26,15 @@ export const pageConvert = function<ItemType = any>(pageData: IPageDataType<Item
         isHasMore: false,
         errMsg: '分页数据获取错误'
     };
-    const {data, total,pageNum, current} = _pageData;
-    const gData:TPageDataFilter<ItemType> = {
+    const { data, total, pageNum, current } = _pageData;
+    const gData: TPageDataFilter<ItemType> = {
         ..._pageData,
         hasBeenLoad: true,
         isHasMore: pageNum > current && total > 0,
-        errMsg: isArr(data)?null:'数据格式错误'
+        errMsg: isArr(data) ? null : '数据格式错误'
     };
     return gData;
-}
+};
 
 // 请求过滤
 export class ResponseFilter {
@@ -45,7 +45,14 @@ export class ResponseFilter {
         }
     }
     // 错误函数
-    error: IHttpServerFilter['error'] = console.error;
+    private error: IHttpServerFilter['error'] = console.error;
+
+    // 设置错误函数
+    setErrorFunc(errorFunc: IHttpServerFilter['error']) {
+        if (isFunc(errorFunc)) {
+            this.error = errorFunc;
+        }
+    }
 
     // 对响应数据进行过滤
     filter(responsePromise: Promise<HttpResponse>, filterHanlder?: (data) => any): Promise<any> {
@@ -66,7 +73,10 @@ export class ResponseFilter {
     }
 
     // 对响应数据进行过滤
-    pageFilter<ItemType = any>(responsePromise: Promise<HttpResponse<IPageDataType<ItemType>>>, filterHanlder?: (data:IPageDataType<ItemType>) => any): Promise<any> {
+    pageFilter<ItemType = any>(
+        responsePromise: Promise<HttpResponse<IPageDataType<ItemType>>>,
+        filterHanlder?: (data: IPageDataType<ItemType>) => any
+    ): Promise<any> {
         return new Promise((resolve: (res: TPageDataFilter<ItemType>) => void, reject) => {
             responsePromise
                 .then(res => {
