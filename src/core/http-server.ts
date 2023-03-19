@@ -166,32 +166,19 @@ export interface IHttpServerOptions {
 export class HttpServer {
     constructor(options: IHttpServerOptions) {
         const { apiPrefix, host, setHeader, request, uploadFile, responseIntercept } = options;
-        this.setApiPrefix(apiPrefix);
-        this.setHost(host);
-        if (isFunc(setHeader)) {
-            this.setHeader = setHeader;
-        }
-        if (responseIntercept) {
-            this.responseIntercept = responseIntercept;
-        }
+        isStr(apiPrefix) && (this.apiPrefix = apiPrefix);
+        isStr(host) && (this.host = host);
+        isFunc(setHeader) && (this.setHeader = setHeader);
+        Boolean(responseIntercept) && (this.responseIntercept = responseIntercept);
         this.request = request;
         this.uploadFile = uploadFile;
     }
 
     // 请求的地址
-    private apiPrefix: string = '/api';
-    public setApiPrefix(apiPrefix) {
-        if (typeof apiPrefix === 'string') {
-            this.apiPrefix = apiPrefix;
-        }
-    }
+    apiPrefix = '/api';
     // 使用的主机
-    private host: string = '';
-    public setHost(host) {
-        if (typeof host === 'string') {
-            this.host = host;
-        }
-    }
+    host = '';
+
     // 获取token方法
     private setHeader: IHttpServerOptions['setHeader'];
     // 发送请求
