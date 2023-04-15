@@ -6,7 +6,6 @@ export * from './core/store';
 
 // 导出方法
 export * from './buffer';
-export * from './file';
 export * from './filter';
 export * from './function';
 export * from './json';

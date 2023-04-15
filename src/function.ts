@@ -1,11 +1,12 @@
-import { isObj } from './type';
 /*
  * @Description: 转换为函数
  * @Author: wkj
  * @Date: 2020-09-24 17:50:43
- * @LastEditTime: 2023-03-25 12:30:41
+ * @LastEditTime: 2023-04-15 08:50:54
  * @LastEditors: wkj wkj@kjwoo.cn
  */
+import { isObj } from './type';
+
 export const toFunction = function (val, context = {}) {
     if (typeof val === 'string' && val !== '') {
         // 使用的上下文
