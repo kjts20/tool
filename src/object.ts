@@ -2,11 +2,22 @@
  * @Description: 对象工具
  * @Author: wkj
  * @Date: 2020-07-10 15:45:20
- * @LastEditTime: 2022-12-21 11:37:43
+ * @LastEditTime: 2023-04-16 08:29:09
  * @LastEditors: wkj wkj@kjwoo.cn
  */
 import { isArr, isFunc, isNum, isObj, isStr } from './type';
 import { urlDecode } from './url';
+
+// 任意对象
+export interface IKeyVal {
+    [key: string | string]: any;
+}
+
+// select选项
+export interface ISelectOption {
+    label: string;
+    value: any;
+}
 
 // map的键类型
 type TMapKeyType = string | number;
