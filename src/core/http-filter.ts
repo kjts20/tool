@@ -14,8 +14,12 @@ export interface IHttpServerFilter {
     error: TErrFunc;
 }
 
-// 请求分页数据->过滤分页数据
-export const pageConvert = function <ItemType = any>(pageData: IPageDataType<ItemType>): TPageDataFilter<ItemType> {
+/**
+ *  请求分页数据修饰
+ * @param pageData
+ * @returns
+ */
+export const pageDecorate = function <ItemType = any>(pageData: IPageDataType<ItemType>): TPageDataFilter<ItemType> {
     const _pageData = pageData || {
         data: [],
         pageSize: 10,
@@ -55,15 +59,15 @@ export class ResponseFilter {
     }
 
     // 对响应数据进行过滤
-    filter(responsePromise: Promise<HttpResponse>, filterHanlder?: (data) => any): Promise<any> {
-        return new Promise((resolve: (res: HttpResponse) => void, reject) => {
+    filter<TData = any, RData = TData>(responsePromise: Promise<HttpResponse<TData>>, filterHanlder?: (data: TData) => RData): Promise<RData> {
+        return new Promise((resolve: (res: RData) => void, reject) => {
             responsePromise
                 .then(res => {
                     if (res.success) {
-                        resolve(filterHanlder ? filterHanlder(res.data) : res.data);
+                        resolve(filterHanlder ? filterHanlder(res.data) : (res.data as any));
                     } else if (isUndefined(res.success, res.code, res.errcode)) {
                         // 如果已经过滤掉请求信息
-                        resolve(filterHanlder ? filterHanlder(res) : res);
+                        resolve(filterHanlder ? filterHanlder(res as any) : (res as any));
                     } else {
                         reject(res);
                     }
@@ -73,15 +77,15 @@ export class ResponseFilter {
     }
 
     // 对响应数据进行过滤
-    pageFilter<ItemType = any>(
+    pageFilter<ItemType = any, RItemType = ItemType>(
         responsePromise: Promise<HttpResponse<IPageDataType<ItemType>>>,
-        filterHanlder?: (data: IPageDataType<ItemType>) => any
-    ): Promise<any> {
-        return new Promise((resolve: (res: TPageDataFilter<ItemType>) => void, reject) => {
+        filterHanlder?: (data: IPageDataType<ItemType>) => IPageDataType<RItemType>
+    ): Promise<IPageDataType<RItemType>> {
+        return new Promise((resolve: (res: TPageDataFilter<RItemType>) => void, reject) => {
             responsePromise
                 .then(res => {
                     const doResolve = pageData => {
-                        resolve(pageConvert(filterHanlder ? filterHanlder(pageData) : pageData));
+                        resolve(pageDecorate(filterHanlder ? filterHanlder(pageData) : pageData));
                     };
                     if (res.success) {
                         doResolve(res.data);
@@ -97,16 +101,21 @@ export class ResponseFilter {
     }
 
     // 响应统一处理
-    unifyRemind(responsePromise: Promise<HttpResponse>, filterHanlder?: ((data) => any) | null, showTip = true): Promise<any> {
-        return new Promise((resolve: (res: HttpResponse) => void, reject) => {
+    unifyRemind<TData = any, RData = TData>(
+        responsePromise: Promise<HttpResponse<TData>>,
+        filterHanlder?: ((data: TData) => RData) | null,
+        showTip = true
+    ): Promise<RData> {
+        return new Promise((resolve: (res: RData) => void, reject) => {
             responsePromise
                 .then(res => {
                     if (res.success) {
-                        resolve(filterHanlder ? filterHanlder(res.data) : res.data);
+                        resolve(filterHanlder ? filterHanlder(res.data) : (res.data as any));
                     } else {
                         if (showTip) {
                             if (res.code === 230) {
-                                for (const it of res.data) {
+                                // 校验时候
+                                for (const it of res.data as any) {
                                     this.error(it.message || '系统开小差了～', res);
                                     break;
                                 }
