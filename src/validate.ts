@@ -48,9 +48,12 @@ export const validateForm = function (columns: Array<IColumn>, formData) {
     }
 };
 
+// 是否必填
+const isNullVal = val => !isUndefined(val) && val != null && isStr(val + '');
+
 // 校验规则
 export const validateRequired = function (val, row: IObject, column: IColumn) {
-    if (!isUndefined(val) && val != null && isStr(val + '')) {
+    if (isNullVal(val)) {
         return null;
     } else {
         return `${column.title}是必填项`;
@@ -59,7 +62,7 @@ export const validateRequired = function (val, row: IObject, column: IColumn) {
 
 // 大于0
 export const validateGtZero = function (val, row: IObject, column: IColumn) {
-    if (!isUndefined(val) && val != null && isStr(val + '')) {
+    if (isNullVal(val)) {
         const newVal = Number(val);
         if (isNum(newVal) && newVal > 0) {
             return null;
@@ -67,12 +70,12 @@ export const validateGtZero = function (val, row: IObject, column: IColumn) {
             return `${column.title}是必须大于0`;
         }
     } else {
-        return `${column.title}是必填项`;
+        return null;
     }
 };
 // 大于等于0
 export const validateGteZero = function (val, row: IObject, column: IColumn) {
-    if (!isUndefined(val) && val != null && isStr(val + '')) {
+    if (isNullVal(val)) {
         const newVal = Number(val);
         if (isNum(newVal) && newVal >= 0) {
             return null;
@@ -80,51 +83,71 @@ export const validateGteZero = function (val, row: IObject, column: IColumn) {
             return `${column.title}是必须大于等于0`;
         }
     } else {
-        return `${column.title}是必填项`;
+        return null;
     }
 };
 
 // 手机号验证
 export const validatePhone = function (val, row: IObject, column: IColumn) {
-    if (isPhone(val)) {
-        return null;
+    if (isNullVal(val)) {
+        if (isPhone(val)) {
+            return null;
+        } else {
+            return `手机号格式不正确`;
+        }
     } else {
-        return `手机号格式不正确`;
+        return null;
     }
 };
 
 // 手机号验证
 export const validateEmail = function (val, row: IObject, column: IColumn) {
-    if (isEmail(val)) {
-        return null;
+    if (isNullVal(val)) {
+        if (isEmail(val)) {
+            return null;
+        } else {
+            return `邮箱格式不正确`;
+        }
     } else {
-        return `邮箱格式不正确`;
+        return null;
     }
 };
 
 // 日期校验
 export const validateDate = function (val, row: IObject, column: IColumn) {
-    if (isDate(val)) {
-        return null;
+    if (isNullVal(val)) {
+        if (isDate(val)) {
+            return null;
+        } else {
+            return `日期格式不正确`;
+        }
     } else {
-        return `日期格式不正确`;
+        return null;
     }
 };
 
 // 链接校验
 export const validateUrl = function (val, row: IObject, column: IColumn) {
-    if (isUrl(val)) {
-        return null;
+    if (isNullVal(val)) {
+        if (isUrl(val)) {
+            return null;
+        } else {
+            return `链接格式不正确`;
+        }
     } else {
-        return `链接格式不正确`;
+        return null;
     }
 };
 
 // 链接校验
 export const validateIdCard = function (val, row: IObject, column: IColumn) {
-    if (isIdcard(val)) {
-        return null;
+    if (isNullVal(val)) {
+        if (isIdcard(val)) {
+            return null;
+        } else {
+            return `链接格式不正确`;
+        }
     } else {
-        return `链接格式不正确`;
+        return null;
     }
 };
