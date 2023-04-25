@@ -57,7 +57,12 @@ export const isNum = function (num) {
 
 // 是否可用数字
 export const isNumStr = function (num) {
-    return /^[\d\.]+$/.test(num + '');
+    return /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(num);
+};
+
+// 是否整数
+export const isInitStr = function (num) {
+    return /^\d+$/.test(num);
 };
 
 // 是否函数

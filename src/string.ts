@@ -247,13 +247,3 @@ export const isDateISO = function (value) {
 export const isIdcard = function (value) {
     return /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(value);
 };
-
-// 是否整数
-export const isInit = function (value) {
-    return /^\d+$/.test(value);
-};
-
-// 验证十进制数字
-export const isNum = function (value) {
-    return /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value);
-};
