@@ -22,7 +22,13 @@ export interface ISelectOption {
 // map的键类型
 type TMapKeyType = string | number;
 
-// 获取字段的值
+/**
+ * 获取字段的值
+ * @param data 值来源
+ * @param name 名字
+ * @param defaultValue 默认值
+ * @returns
+ */
 export const getColumnValue = function (data, name, defaultValue?) {
     if (data) {
         if (name) {
@@ -72,10 +78,17 @@ export const getColumnValue = function (data, name, defaultValue?) {
         return defaultValue;
     }
 };
-// 设置字段的值
-export const setDictValue = function (data, name, value) {
+
+/**
+ * 设置字段的值
+ * @param data 赋值对象
+ * @param name 名字（可以是：user.name）
+ * @param value 值
+ * @returns
+ */
+export const setDictValue = function <TData>(data: TData, name, value) {
     if (!data) {
-        data = {};
+        data = {} as TData;
     }
     var nameArr: Array<any> = [];
     if (isStr(name)) {
@@ -137,17 +150,30 @@ export const getColumnValueAndRenderByName = function (name, data, render: any =
     }
 };
 
-//深度克隆
-export const deepClone = function <T>(obj: T): T {
+/**
+ * 深度克隆
+ * @param obj 原值
+ * @param debug
+ * @returns
+ */
+export const deepClone = function <T>(obj: T, debug = true): T {
     try {
         return JSON.parse(JSON.stringify(obj));
-    } catch (error) {
+    } catch (err) {
+        if (debug) {
+            console.error('深度克隆错误：', err);
+        }
         return obj;
     }
 };
 
-// 字符串转json （保护转义）
-export const toJson = str => {
+/**
+ * 字符串转json （保护转义）
+ * @param str 格式化的正则
+ * @param debug 是否调试
+ * @returns
+ */
+export const toJson = function (str, debug = true) {
     try {
         if (typeof str === 'string' && str !== '') {
             //如果需要转义的
@@ -160,18 +186,27 @@ export const toJson = str => {
         } else if (typeof str === 'object') {
             return str;
         } else {
-            console.warn('不正确的json字符串', str);
+            if (debug) {
+                console.warn('不正确的json字符串', str);
+            }
             return str;
         }
     } catch (err) {
-        console.error('转json对象失败', err);
+        if (debug) {
+            console.error('转json对象失败', err);
+        }
         return str;
     }
 };
 
-//获取数组
-export const getArray = function <T = any>(length, fillOrFillFunc?: T | ((index: number) => T)): Array<T> {
-    let len = parseInt(length) || 0;
+/**
+ * 获取数组
+ * @param length 长度
+ * @param fillOrFillFunc 添加内容/添加内容函数
+ * @returns
+ */
+export const getArray = function <T = any>(length: number, fillOrFillFunc?: T | ((index: number) => T)): Array<T> {
+    let len = Math.floor(length) || 0;
     return new Array(len).fill(null).map((_, i) => {
         if (isFunc(fillOrFillFunc)) {
             // @ts-ignore
@@ -183,45 +218,60 @@ export const getArray = function <T = any>(length, fillOrFillFunc?: T | ((index:
     });
 };
 
-// 过滤对象
-export const filterObj = function (obj, itemDecorate?) {
+/**
+ * 过滤对象
+ * @param obj 原对象
+ * @param valHandler 值过滤
+ * @returns
+ */
+export const filterObj = function <TData>(obj: TData, valHandler?): TData {
+    const newObj: any = {};
     if (isObj(obj)) {
-        const newObj = {};
-        let itemFunc = typeof itemDecorate === 'function' ? itemDecorate : val => val;
+        let itemFunc = typeof valHandler === 'function' ? valHandler : val => val;
         for (const k in obj) {
             const it = obj[k];
             if (k && k !== 'undefined' && it && it != 'undefined') {
                 newObj[k] = itemFunc(it);
             }
         }
-        return newObj;
-    } else {
-        return {};
     }
+    return newObj;
 };
 
-// 数组转换为对象
-export const list2Dict = function <T = any>(data: Array<T>, column: keyof T | 'id' = 'id', itMapHandler?: (it: T) => any) {
+/**
+ * 数组转换为对象
+ * @param data 列表数据
+ * @param column 键的字段
+ * @param itMapHandler
+ * @returns
+ */
+export const list2Dict = function <TData = any>(data: Array<TData>, column: keyof TData | 'id' = 'id', valHandler?: (it: TData) => any) {
     // 字段默认是id
     if (typeof column !== 'string' || column === '') {
         console.warn('list2Dict字段不合法，已经使用默认字段id', column);
         column = 'id';
     }
     // @ts-ignore
-    return biList2Dict(data, it => it[column], itMapHandler);
+    return biList2Dict(data, it => it[column], valHandler);
 };
 
-// 数组转换为对象
-export const biList2Dict = function <T = any>(data: Array<T>, keyGenerater: (it: T) => number | string, itMapHandler?: (it: T) => any): any {
+/**
+ * 数组转换为对象
+ * @param data 列表数据
+ * @param keyHandler 键操作
+ * @param valHandler 值操作
+ * @returns
+ */
+export const biList2Dict = function <TData = any>(data: Array<TData>, keyHandler: (it: TData) => number | string, valHandler?: (it: TData) => any): any {
     // 数据处理
     if (Array.isArray(data)) {
         // 子项处理方法
-        const itHanlder = itMapHandler && isFunc(itMapHandler) ? itMapHandler : it => it;
+        const itValHanlder = valHandler && isFunc(valHandler) ? valHandler : it => it;
         const newDict = {};
         data.forEach(it => {
-            const key = keyGenerater(it);
+            const key = keyHandler(it);
             if (isStr(key) || isNum(key)) {
-                newDict[key] = itHanlder(it);
+                newDict[key] = itValHanlder(it);
             }
         });
         return newDict;
@@ -233,8 +283,13 @@ export const biList2Dict = function <T = any>(data: Array<T>, keyGenerater: (it:
     }
 };
 
-// 字典转数组
-export const dict2List = function <T = any>(data, keyColumn?): Array<T> {
+/**
+ * 字典转数组
+ * @param data
+ * @param keyColumn
+ * @returns
+ */
+export const dict2List = function <TData = any>(data, keyColumn?: string): Array<TData> {
     return biDict2List(data, (it, key) => {
         if (isObj(it)) {
             if (keyColumn) {
