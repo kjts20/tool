@@ -197,11 +197,11 @@
         'g3': var(--bg-3, #f3f3f3),
         'g6': var(--bg-6, #f6f6f6),
         'g9': var(--bg-9, #f9f9f9),
-        'warning': var(--color-warning, #fff7cc),
+        'warning': var(--color-warning, #ed7b2f),
         'white': var(--color-white, #ffffff),
-        'danger': var(--color-danger, #f56723),
+        'danger': var(--color-danger, #e34d59),
         'link': var(--color-link, rgb(69, 82, 91)),
-        'primary': var(--color-primary, #1890ff)
+        'primary': var(--color-primary, #0052d9)
     );
 
     @each $size, $color in $fontColorList {
@@ -232,10 +232,10 @@
         6: var(--bg-6, #f6f6f6),
         9: var(--bg-9, #f9f9f9),
         'd': var(--bg-d, #dcdee3),
-        'primary': var(--selected-bg-color, #1890ff),
+        'primary': var(--bg-primary, #0052d9),
         'transparent': transparent,
-        'warning': var(--color-warning, #fff7cc),
-        'danger': var(--color-danger, #f56723)
+        'warning': var(--bg-warning, #ed7b2f),
+        'danger': var(--bg-danger, #e34d59)
     );
 
     .border {

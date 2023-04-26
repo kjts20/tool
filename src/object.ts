@@ -230,7 +230,7 @@ export const filterObj = function <TData>(obj: TData, valHandler?): TData {
         let itemFunc = typeof valHandler === 'function' ? valHandler : val => val;
         for (const k in obj) {
             const it = obj[k];
-            if (k && k !== 'undefined' && it && it != 'undefined') {
+            if (k && k !== 'undefined' && typeof it != 'undefined') {
                 newObj[k] = itemFunc(it);
             }
         }
