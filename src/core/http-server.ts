@@ -1,6 +1,7 @@
 import { isArr, isFunc, isNum, isObj, isStr } from '../type';
 import { mergeUrl } from '../url';
 import { trim } from '../string';
+import { toJson } from '../object';
 
 // 获取请求头部
 const getHeader = function (...headers) {
@@ -252,12 +253,27 @@ export class HttpServer {
             success: function (response) {
                 const { statusCode } = response;
                 const res: any = response.data;
-                if (statusCode == 200 && isObj(res)) {
-                    if (Object.keys(res).length <= 0) {
-                        // 文件流方式
-                        resultFilter(successResponse('arrayBuffer生成成功', res));
+                if (statusCode == 200) {
+                    const resFinal = toJson(res, false);
+                    if (isObj(resFinal)) {
+                        if (Object.keys(resFinal).length <= 0) {
+                            // 文件流方式
+                            resultFilter(successResponse('arrayBuffer生成成功', resFinal));
+                        } else {
+                            resultFilter(unifiedResponse(resFinal));
+                        }
                     } else {
-                        resultFilter(unifiedResponse(res));
+                        resultFilter(
+                            unifiedResponse({
+                                code: statusCode,
+                                errcode: 1,
+                                msg: '接口格式错误！！！',
+                                data: {
+                                    request: sendData,
+                                    response: resFinal
+                                }
+                            })
+                        );
                     }
                 } else {
                     resultFilter(
@@ -265,12 +281,25 @@ export class HttpServer {
                             code: statusCode,
                             errcode: 1,
                             msg: (isObj(res) ? res.msg : null) || '系统错误',
-                            data: sendData
+                            data: {
+                                request: sendData,
+                                response: res
+                            }
                         })
                     );
                 }
             },
             error: function (err) {
+                resultFilter(
+                    unifiedResponse({
+                        code: 600,
+                        errcode: 1,
+                        msg: (err && err.msg) || '系统错误',
+                        data: err
+                    })
+                );
+            },
+            fail: function (err) {
                 resultFilter(
                     unifiedResponse({
                         code: 600,
