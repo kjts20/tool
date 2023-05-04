@@ -40,9 +40,14 @@ export interface IStatus {
  * 响应状态
  */
 export const responseStatus = {
+    // 成功
     success: 1,
+    // 错误
     error: -1,
-    fail: 0
+    // 失败
+    fail: 0,
+    // 等待中
+    waiting: 2
 };
 
 // http响应状态
