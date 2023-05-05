@@ -1,6 +1,7 @@
 @import './common/base.scss';
 page {
     color: var(--color-3, #333);
+    background-color: var(--bg-6, #f6f6f6);
 }
 view, text,image{
     box-sizing: border-box;
