@@ -1,6 +1,6 @@
 {
     "name": "@kjts20/tool",
-    "version": "0.0.85",
+    "version": "0.0.86",
     "description": "wkj",
     "miniprogram": "dist",
     "main": "dist/index.js",
