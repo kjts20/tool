@@ -31,7 +31,7 @@ export const defaultPaging = {
     hasMore: true,
     success: false,
     error: false,
-    fail: true,
+    fail: false,
     empty: false,
     msg: '初始化分页'
 };
