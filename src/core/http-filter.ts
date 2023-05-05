@@ -21,6 +21,22 @@ export interface IHttpServerFilter {
 }
 
 /**
+ * 默认分页数据
+ */
+export const defaultPaging = {
+    pageSize: 10,
+    pageNum: 0,
+    total: 0,
+    current: 1,
+    hasMore: true,
+    success: false,
+    error: false,
+    fail: true,
+    empty: false,
+    msg: '初始化分页'
+};
+
+/**
  *  请求分页数据修饰
  * @param pageData
  * @returns
