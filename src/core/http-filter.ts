@@ -2,12 +2,18 @@ import { isArr, isFunc, isUndefined } from '../type';
 import { HttpResponse, IPageDataType } from './http-server';
 import { TErrFunc } from './type';
 
-// 分页过滤数据
-export type TPageDataFilter<Item = any> = IPageDataType<Item> & {
-    hasBeenLoad: boolean;
-    isHasMore: boolean;
-    errMsg?: string;
-};
+// 分页数据结果
+export interface IResultPaging<IDateItem = any> {
+    paging: Omit<IPageDataType, 'data'> & {
+        success: boolean;
+        error: boolean;
+        fail: boolean;
+        msg: string;
+        hasMore: boolean;
+        empty: boolean;
+    };
+    data: IPageDataType<IDateItem>['data'];
+}
 
 // 请求过滤参数
 export interface IHttpServerFilter {
@@ -19,25 +25,30 @@ export interface IHttpServerFilter {
  * @param pageData
  * @returns
  */
-export const pageDecorate = function <ItemType = any>(pageData: IPageDataType<ItemType>): TPageDataFilter<ItemType> {
-    const _pageData = pageData || {
-        data: [],
-        pageSize: 10,
-        total: 0,
-        pageNum: 0,
-        current: 0,
-        hasBeenLoad: true,
-        isHasMore: false,
-        errMsg: '分页数据获取错误'
+export const pageDecorate = function <ItemType = any>(
+    success: boolean,
+    error: boolean,
+    fail: boolean,
+    msg: string,
+    pageData: IPageDataType<ItemType>
+): IResultPaging<ItemType> {
+    const { data: _data, pageSize = 10, pageNum = 0, total = 0, current = 1 } = pageData;
+    const data = isArr(_data) ? [..._data] : [];
+    return {
+        paging: {
+            pageSize,
+            pageNum,
+            total,
+            current,
+            hasMore: pageNum > current && total > 0,
+            success,
+            error,
+            fail,
+            empty: !(data.length > 0 && total > 0),
+            msg: isArr(_data) ? msg : '数据格式错误'
+        },
+        data
     };
-    const { data, total, pageNum, current } = _pageData;
-    const gData: TPageDataFilter<ItemType> = {
-        ..._pageData,
-        hasBeenLoad: true,
-        isHasMore: pageNum > current && total > 0,
-        errMsg: isArr(data) ? null : '数据格式错误'
-    };
-    return gData;
 };
 
 // 请求过滤
@@ -78,25 +89,25 @@ export class ResponseFilter {
 
     // 对响应数据进行过滤
     pageFilter<ItemType = any, RItemType = ItemType>(
-        responsePromise: Promise<HttpResponse<IPageDataType<ItemType>>>,
+        getPagingService: Promise<HttpResponse<IPageDataType<ItemType>>>,
         filterHanlder?: (data: IPageDataType<ItemType>) => IPageDataType<RItemType>
-    ): Promise<IPageDataType<RItemType>> {
-        return new Promise((resolve: (res: TPageDataFilter<RItemType>) => void, reject) => {
-            responsePromise
-                .then(res => {
-                    const doResolve = pageData => {
-                        resolve(pageDecorate(filterHanlder ? filterHanlder(pageData) : pageData));
-                    };
-                    if (res.success) {
-                        doResolve(res.data);
-                    } else if (isUndefined(res.success, res.code, res.errcode)) {
-                        // 如果已经过滤掉请求信息
-                        doResolve(res);
-                    } else {
-                        reject(res);
-                    }
-                })
-                .catch(reject);
+    ): Promise<IResultPaging<RItemType>> {
+        return new Promise((resolve: (res: IResultPaging<RItemType>) => void) => {
+            try {
+                getPagingService
+                    .then(res => {
+                        const { success, fail, error, msg, data } = res;
+                        const newData = (filterHanlder && isFunc(filterHanlder) ? filterHanlder : d => d)(data);
+                        resolve(pageDecorate<RItemType>(success, fail, error, msg, newData));
+                    })
+                    .catch(err => {
+                        console.error('获取分页数据错误1：', err);
+                        resolve(pageDecorate<RItemType>(false, false, true, err?.msg || err || '获取分页数据错误', [] as any));
+                    });
+            } catch (err) {
+                console.error('获取分页数据错误2：', err);
+                resolve(pageDecorate<RItemType>(false, false, true, err?.msg || err || '获取分页数据错误', [] as any));
+            }
         });
     }
 
