@@ -43,8 +43,8 @@ export const defaultPaging = {
  */
 export const pageDecorate = function <ItemType = any>(
     success: boolean,
-    error: boolean,
     fail: boolean,
+    error: boolean,
     msg: string,
     pageData: IPageDataType<ItemType>
 ): IResultPaging<ItemType> {
