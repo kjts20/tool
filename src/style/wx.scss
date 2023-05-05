@@ -1,11 +1,13 @@
 @import './common/base.scss';
-page {
+page,scroll-view {
     color: var(--color-3, #333);
     background-color: var(--bg-6, #f6f6f6);
 }
-view, text,image{
+
+view, text,image,scroll-view{
     box-sizing: border-box;
 }
+
 .safe-area{
     &-bottom{
         padding-bottom: constant(safe-area-inset-bottom);
@@ -24,4 +26,5 @@ view, text,image{
         padding-right: env(safe-area-inset-right);
     }
 }
+
 @include to-common-class(rpx);
