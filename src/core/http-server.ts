@@ -36,20 +36,6 @@ export interface IStatus {
     timeout: boolean;
 }
 
-/**
- * 响应状态
- */
-export const responseStatus = {
-    // 成功
-    success: 1,
-    // 错误
-    error: -1,
-    // 失败
-    fail: 0,
-    // 等待中
-    waiting: 2
-};
-
 // http响应状态
 export type HttpResponse<DataType = any> = IResponse<DataType> & IStatus;
 
@@ -258,10 +244,8 @@ export class HttpServer {
         const resultFilter = function (res: HttpResponse) {
             const finalRes = that.responseIntercept(res);
             if (finalRes && finalRes.error === false) {
-                finalRes['responseStatus'] = finalRes.fail ? responseStatus.fail : responseStatus.success;
                 resolve(finalRes);
             } else {
-                finalRes['responseStatus'] = responseStatus.error;
                 reject(finalRes);
             }
         };
