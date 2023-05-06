@@ -1,7 +1,7 @@
 import { isArr, isFunc, isNum, isObj, isStr } from '../type';
 import { mergeUrl } from '../url';
 import { trim } from '../string';
-import { toJson } from '../object';
+import { removeObjectUndefined, toJson } from '../object';
 
 // 获取请求头部
 const getHeader = function (...headers) {
@@ -214,7 +214,7 @@ export class HttpServer {
             // 请求的路径
             let requestUrl = that.getRequestUrl(url);
             // 请求的数据
-            let requestBody = data || {};
+            let requestBody = removeObjectUndefined(data || {});
             if (method === EMethodType.GET) {
                 requestUrl = mergeUrl(requestUrl, requestBody);
                 requestBody = {};
@@ -343,7 +343,7 @@ export class HttpServer {
                 url: that.getRequestUrl(url),
                 filePath: isObj(filePath) ? filePath.tempFilePath || filePath.path : filePath,
                 name,
-                formData: data || {},
+                formData: removeObjectUndefined(data || {}),
                 header: getHeader(header, that.setHeader ? that.setHeader() : {}),
                 ...that.toRequestResultFunc(resolve, reject, data)
             });
