@@ -73,6 +73,7 @@ export const validateGtZero = function (val, row: IObject, column: IColumn) {
         return null;
     }
 };
+
 // 大于等于0
 export const validateGteZero = function (val, row: IObject, column: IColumn) {
     if (isNullVal(val)) {
@@ -80,7 +81,34 @@ export const validateGteZero = function (val, row: IObject, column: IColumn) {
         if (isNum(newVal) && newVal >= 0) {
             return null;
         } else {
-            return `${column.title}是必须大于等于0`;
+            return `“${column.title}”必须大于等于0`;
+        }
+    } else {
+        return null;
+    }
+};
+
+// 整数
+export const validateInt = function (val, row: IObject, column: IColumn) {
+    if (isNullVal(val)) {
+        const num = Number(val);
+        if (!isNaN(num) && Math.ceil(num) === num) {
+            return null;
+        } else {
+            return `“${column.title}”必须是一个整数`;
+        }
+    } else {
+        return null;
+    }
+};
+
+// 数字
+export const validateNum = function (val, row: IObject, column: IColumn) {
+    if (isNullVal(val)) {
+        if (!isNaN(Number(val))) {
+            return null;
+        } else {
+            return `“${column.title}”必须是一个数字`;
         }
     } else {
         return null;

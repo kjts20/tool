@@ -131,6 +131,8 @@ export const toCurrentSeconds = timeStr => {
     return (getCurrentStamp() - dateStr2Timestamp(timeStr)) / 1000;
 };
 
+// ===================== 范围 =========================
+
 // 一天开始时间
 const dayStartStr = ' 00:00:00';
 const dayEndStr = ' 23:59:59';
@@ -138,10 +140,10 @@ const dayEndStr = ' 23:59:59';
 const dayMilliseconds = 24 * 60 * 60 * 1000;
 
 // 日时间范围
-export const getDayRange = function (day = 0) {
-    const todayYmd = now('YY-MM-DD');
-    const range: Array<string> = [todayYmd + dayStartStr, todayYmd + dayEndStr];
-    const dayYmd = timestamp2str(getCurrentStamp() + day * dayMilliseconds, 'YY-MM-DD');
+export const getDayRange = function (day = 0, startDate = new Date()) {
+    const startDateYmd = date2str(startDate, 'YY-MM-DD');
+    const range: Array<string> = [startDateYmd + dayStartStr, startDateYmd + dayEndStr];
+    const dayYmd = timestamp2str(startDate.getTime() + day * dayMilliseconds, 'YY-MM-DD');
     if (day < 0) {
         // 计算过去时间，那么调整开始时间
         range[0] = dayYmd + dayStartStr;
@@ -150,4 +152,13 @@ export const getDayRange = function (day = 0) {
         range[1] = dayYmd + dayEndStr;
     }
     return range;
+};
+
+/**
+ * 生成日范围
+ * @param startTime 开始日期
+ * @param endTime 开始日期
+ */
+export const genDayRange = function (startYmd, endYmd) {
+    return [date2str(startYmd, 'YY-MM-DD') + dayStartStr, date2str(endYmd, 'YY-MM-DD') + dayEndStr];
 };
