@@ -219,20 +219,38 @@ export const getArray = function <T = any>(length: number, fillOrFillFunc?: T | 
 };
 
 /**
- * 过滤对象
- * @param obj 原对象
- * @param valHandler 值过滤
+ * 对象值过滤
+ * @param obj
+ * @param valHandler
  * @returns
  */
-export const filterObj = function <TData>(obj: TData, valHandler?): TData {
+export const objFilter = function <TData>(obj: TData, valHandler?: (val) => boolean): TData {
     const newObj: any = {};
     if (isObj(obj)) {
-        let itemFunc = typeof valHandler === 'function' ? valHandler : val => val;
+        let itemFunc = typeof valHandler === 'function' ? valHandler : val => typeof val != 'undefined';
         for (const k in obj) {
             const it = obj[k];
-            if (k && k !== 'undefined' && typeof it != 'undefined') {
-                newObj[k] = itemFunc(it);
+            if (k && k !== 'undefined' && itemFunc(it)) {
+                newObj[k] = it;
             }
+        }
+    }
+    return newObj;
+};
+
+/**
+ * 对象装饰
+ * @param obj
+ * @param valHandler
+ * @returns
+ */
+export const objDecorate = function <TData>(obj: TData, valHandler?: (val) => any, keyHandler?: (key) => string | number): TData {
+    const newObj: any = {};
+    if (isObj(obj)) {
+        let keyFunc = isFunc(keyHandler) ? valHandler : key => key + '';
+        let valFunc = isFunc(valHandler) ? valHandler : val => val || '';
+        for (const k in obj) {
+            newObj[keyFunc(k)] = valFunc(obj[k]);
         }
     }
     return newObj;

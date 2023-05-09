@@ -27,4 +27,8 @@ view, text,image,scroll-view,button{
     }
 }
 
+button[aria-disabled='true'] {
+    opacity: 0.6;
+}
+
 @include to-common-class(rpx);
