@@ -133,6 +133,19 @@
         }
     }
 
+    $vpList: (20, 80, 85,100);
+
+
+    // 文字对齐方式
+    @each $vp in $vpList {
+        .width-v#{$vp} {
+            width: $vp * 1vw;
+        }
+        .height-v#{$vp} {
+            width: $vp * 1vh;
+        }
+    }
+
     // ========================  文本 ===============
     .text-ellipsis {
         @include ellipsis-single();
@@ -673,6 +686,49 @@
                 .flex-#{$jcK}-#{$aiK} {
                     @include to-flex-class($jcV, $aiV);
                 }
+            }
+        }
+    }
+
+    // =============== 按钮组 ==================
+    .btn-group {
+        display: flex;
+        height: var(--btn-group-height, 84rpx);
+        color: var(--btn-group-color, #ffffff);
+
+        > .btn {
+            font-size: var(--btn-group-font, 32rpx);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: unset;
+            box-sizing: border-box;
+            &::after {
+                border-radius: unset;
+                background: transparent;
+                border: unset;
+            }
+            &:first-child {
+                border-width: 1rpx 0 1rpx 1rpx;
+                border-style: solid;
+                border-color: var(--first-btn-border, #fa4126);
+                border-radius: var(--btn-group-height, 84rpx) 0 0 var(--btn-group-height, 84rpx);
+            }
+            &:last-child {
+                border-width: 1rpx 1rpx 1rpx 0;
+                border-style: solid;
+                border-color: var(--last-btn-border, #fa4126);
+                border-radius: 0 var(--btn-group-height, 84rpx) var(--btn-group-height, 84rpx) 0;
+            }
+            &.primary {
+                background-color: var(--btn-group-primary, #0052d9);
+            }
+            &.danger {
+                background-color: var(--btn-group-danger, #fa4126);
+            }
+            &.ghost {
+                background-color: transparent;
             }
         }
     }

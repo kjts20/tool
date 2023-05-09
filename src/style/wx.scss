@@ -1,10 +1,10 @@
 @import './common/base.scss';
-page,scroll-view {
+page {
     color: var(--color-3, #333);
     background-color: var(--bg-6, #f6f6f6);
 }
 
-view, text,image,scroll-view{
+view, text,image,scroll-view,button{
     box-sizing: border-box;
 }
 

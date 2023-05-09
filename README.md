@@ -77,7 +77,7 @@ export default new HttpServer({
 -   新建 storage.ts，作为仓库类
 
 ```ts
-import {Storage} from '@kjts20/tool';
+import { Storage } from '@kjts20/tool';
 import { error } from './wx.tool';
 export default new Storage(
     {
@@ -124,7 +124,9 @@ const test = function () {
 ```
 
 ### H5 使用指引
-#### 使用axios初始化httpServer, utils/http-server.ts中
+
+#### 使用 axios 初始化 httpServer, utils/http-server.ts 中
+
 ```TS
 import { HttpServer, isObj, toJson } from "@kjts20/tool";
 import Axios from 'axios'
@@ -135,11 +137,11 @@ export default new HttpServer({
     request(options){
         const {url, data, header, timeout, method, success, error, complete} = options;
         Axios.request({
-            url, 
-            data, 
+            url,
+            data,
             headers: header,
             timeout,
-            method            
+            method
         }).then(res=>{
             if(isObj(res)){
                 if(success){
@@ -168,11 +170,11 @@ export default new HttpServer({
     uploadFile(options){
         const {url, filePath, formData, header, timeout, method, success, error, complete} = options;
         Axios.request({
-            url, 
-            data: formData, 
+            url,
+            data: formData,
             headers: header,
             timeout,
-            method: "POSt",        
+            method: "POSt",
         }).then(res=>{
             if(isObj(res)){
                 if(success){
@@ -203,8 +205,9 @@ export default new HttpServer({
 });
 ```
 
-#### 使用next初始化请求过滤类, response-filter.ts
-``` TS
+#### 使用 next 初始化请求过滤类, response-filter.ts
+
+```TS
 import { ResponseFilter  } from "@kjts20/tool";
 import { Message } from '@alifd/next';
 
