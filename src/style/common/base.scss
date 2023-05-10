@@ -163,7 +163,7 @@
     }
 
     .text {
-        &-blod {
+        &-bold {
             font-weight: bold;
         }
     }
@@ -261,13 +261,6 @@
         'warning': var(--bg-warning, #ed7b2f),
         'danger': var(--bg-danger, #e34d59)
     );
-
-    .border {
-        &-0,
-        &-unset {
-            border: unset !important;
-        }
-    }
 
     // 定位
     $positionList: (relative, absolute, fixed, static, sticky);
@@ -530,6 +523,10 @@
     .border {
         &-box {
             box-sizing: border-box;
+        }
+        &-0,
+        &-unset {
+            border: unset !important;
         }
     }
 
