@@ -194,11 +194,22 @@
     // 字体大小：10 ～ 24
     @for $i from 10 through 24 {
         $size: $i;
-
-        // 排除10倍数
-        @if $size%10 !=0 {
-            .font-#{$size} {
-                font-size: #{$size}#{$unit} !important;
+        @if $unit == 'rpx'{
+            $val: $size*2;
+            // 排除10倍数
+            @if $val%10 !=0 {
+                .font-#{$val} {
+                    font-size: #{$val}#{$unit} !important;
+                }
+            }
+        }
+        @if $unit != 'rpx'{
+            $val: $size;
+            // 排除10倍数
+            @if $val%10 !=0 {
+                .font-#{$val} {
+                    font-size: #{$val}#{$unit} !important;
+                }
             }
         }
     }
