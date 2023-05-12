@@ -238,6 +238,11 @@ export const isDate = function (value) {
     return !/Invalid|NaN/.test(new Date(value).toString());
 };
 
+// 日期格式校验
+export const isDateStr = function (str) {
+    return /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])\s+([0-5][0-9]):([0-5][0-9]):([0-5][0-9]).*?$/.test(str);
+};
+
 // 验证ISO类型的日期格式
 export const isDateISO = function (value) {
     return /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.test(value);

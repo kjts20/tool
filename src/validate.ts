@@ -1,5 +1,5 @@
-import { isDate, isEmail, isIdcard, isPhone, isUrl } from './string';
-import { isArr, isFunc, isNum, isObj, isStr, isUndefined } from './type';
+import { isDate, isDateStr, isEmail, isIdcard, isPhone, isUrl } from './string';
+import { isArr, isFunc, isNum, isObj, isStr, isUndefined, getLen } from './type';
 
 // 对象类型
 export interface IObject {
@@ -49,11 +49,11 @@ export const validateForm = function (columns: Array<IColumn>, formData) {
 };
 
 // 是否必填
-const isNullVal = val => !isUndefined(val) && val != null && isStr(val + '');
+const isNotNull = val => !isUndefined(val) && val != null && isStr(val + '');
 
 // 校验规则
 export const validateRequired = function (val, row: IObject, column: IColumn) {
-    if (isNullVal(val)) {
+    if (isNotNull(val)) {
         return null;
     } else {
         return `${column.title}是必填项`;
@@ -62,7 +62,7 @@ export const validateRequired = function (val, row: IObject, column: IColumn) {
 
 // 大于0
 export const validateGtZero = function (val, row: IObject, column: IColumn) {
-    if (isNullVal(val)) {
+    if (isNotNull(val)) {
         const newVal = Number(val);
         if (isNum(newVal) && newVal > 0) {
             return null;
@@ -76,7 +76,7 @@ export const validateGtZero = function (val, row: IObject, column: IColumn) {
 
 // 大于等于0
 export const validateGteZero = function (val, row: IObject, column: IColumn) {
-    if (isNullVal(val)) {
+    if (isNotNull(val)) {
         const newVal = Number(val);
         if (isNum(newVal) && newVal >= 0) {
             return null;
@@ -90,7 +90,7 @@ export const validateGteZero = function (val, row: IObject, column: IColumn) {
 
 // 整数
 export const validateInt = function (val, row: IObject, column: IColumn) {
-    if (isNullVal(val)) {
+    if (isNotNull(val)) {
         const num = Number(val);
         if (!isNaN(num) && Math.ceil(num) === num) {
             return null;
@@ -104,7 +104,7 @@ export const validateInt = function (val, row: IObject, column: IColumn) {
 
 // 数字
 export const validateNum = function (val, row: IObject, column: IColumn) {
-    if (isNullVal(val)) {
+    if (isNotNull(val)) {
         if (!isNaN(Number(val))) {
             return null;
         } else {
@@ -117,7 +117,7 @@ export const validateNum = function (val, row: IObject, column: IColumn) {
 
 // 手机号验证
 export const validatePhone = function (val, row: IObject, column: IColumn) {
-    if (isNullVal(val)) {
+    if (isNotNull(val)) {
         if (isPhone(val)) {
             return null;
         } else {
@@ -130,7 +130,7 @@ export const validatePhone = function (val, row: IObject, column: IColumn) {
 
 // 手机号验证
 export const validateEmail = function (val, row: IObject, column: IColumn) {
-    if (isNullVal(val)) {
+    if (isNotNull(val)) {
         if (isEmail(val)) {
             return null;
         } else {
@@ -143,8 +143,8 @@ export const validateEmail = function (val, row: IObject, column: IColumn) {
 
 // 日期校验
 export const validateDate = function (val, row: IObject, column: IColumn) {
-    if (isNullVal(val)) {
-        if (isDate(val)) {
+    if (isNotNull(val)) {
+        if (isDateStr(val)) {
             return null;
         } else {
             return `日期格式不正确`;
@@ -154,9 +154,38 @@ export const validateDate = function (val, row: IObject, column: IColumn) {
     }
 };
 
+// 日期范围校验
+export const validateDateRange = function (val, row: IObject, column: IColumn) {
+    if (isArr(val)) {
+        const [startDate, endDate] = val;
+        if (isNotNull(startDate) && !isDateStr(startDate)) {
+            return `开始日期格式不正确`;
+        }
+        if (isNotNull(endDate) && !isDateStr(endDate)) {
+            return `结束日期格式不正确`;
+        }
+        return null;
+    } else {
+        return `日期范围格式不正确`;
+    }
+};
+
+// 数组判断
+export const validateArrRequired = function (val, row: IObject, column: IColumn) {
+    if (isArr(val)) {
+        if (val.length > 0) {
+            return null;
+        } else {
+            return `${column.title}是必填项`;
+        }
+    } else {
+        return `非数组格式`;
+    }
+};
+
 // 链接校验
 export const validateUrl = function (val, row: IObject, column: IColumn) {
-    if (isNullVal(val)) {
+    if (isNotNull(val)) {
         if (isUrl(val)) {
             return null;
         } else {
@@ -169,7 +198,7 @@ export const validateUrl = function (val, row: IObject, column: IColumn) {
 
 // 链接校验
 export const validateIdCard = function (val, row: IObject, column: IColumn) {
-    if (isNullVal(val)) {
+    if (isNotNull(val)) {
         if (isIdcard(val)) {
             return null;
         } else {
