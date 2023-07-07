@@ -1,4 +1,4 @@
-import { isArr, isFunc, isUndefined } from '../type';
+import { isArr, isFunc, isStr, isUndefined } from '../type';
 import { HttpResponse, IPageDataType } from './http-server';
 import { TErrFunc } from './type';
 
@@ -124,6 +124,40 @@ export class ResponseFilter {
                 console.error('获取分页数据错误2：', err);
                 resolve(pageDecorate<RItemType>(false, false, true, err?.msg || err || '获取分页数据错误', [] as any));
             }
+        });
+    }
+
+    /**
+     * 操作
+     * @param responsePromise
+     * @param filterHanlder
+     * @returns
+     */
+    processing<TData = any, RData = TData>(responsePromise: Promise<HttpResponse<TData>>, filterHanlder?: (data: TData) => RData): Promise<RData> {
+        return new Promise((resolve: (res: RData) => void, reject) => {
+            responsePromise
+                .then(res => {
+                    const { data, success } = res;
+                    if (success) {
+                        if (filterHanlder) {
+                            resolve(filterHanlder(data));
+                        } else {
+                            resolve(data as any);
+                        }
+                    } else {
+                        if (res.code === 230) {
+                            for (const it of res.data as any) {
+                                reject(it.message || '系统开小差了～');
+                                break;
+                            }
+                        } else {
+                            reject(res.msg || '系统开小差了～');
+                        }
+                    }
+                })
+                .catch(err => {
+                    reject(err.msg || isStr(err) ? err : '系统开小差了～');
+                });
         });
     }
 
