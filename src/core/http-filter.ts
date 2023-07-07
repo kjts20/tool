@@ -130,14 +130,19 @@ export class ResponseFilter {
     // 响应统一处理
     unifyRemind<TData = any, RData = TData>(
         responsePromise: Promise<HttpResponse<TData>>,
-        filterHanlder?: ((data: TData) => RData) | null,
+        filterHanlder?: (data: TData) => RData,
         showTip = true
     ): Promise<RData> {
         return new Promise((resolve: (res: RData) => void, reject) => {
             responsePromise
                 .then(res => {
-                    if (res.success) {
-                        resolve(filterHanlder ? filterHanlder(res.data) : (res.data as any));
+                    const { data, success } = res;
+                    if (success) {
+                        if (filterHanlder) {
+                            resolve(filterHanlder(data));
+                        } else {
+                            resolve(data as any);
+                        }
                     } else {
                         if (showTip) {
                             if (res.code === 230) {
