@@ -1,10 +1,13 @@
-/**
- * 等待器
- * 1、触发事件之后，稍等片刻再执行
- * 注： 如果上一次事件未回调，再次触发事件，那么将取消上次事件
+/*
+ * @Author: wkj（wkj.kjwoo.cn）
+ * @Date: 2022-12-07 22:24:31
+ * @LastEditTime: 2023-07-08 12:44:10
+ * @Description: 等待器
+ *   1、触发事件之后，稍等片刻再执行
+ *   注： 如果上一次事件未回调，再次触发事件，那么将取消上次事件
  */
-import { generateRandomStr } from '../string';
-import { isNum, isObj } from '../type';
+import { generateRandomStr } from '../utils/string';
+import { isNum, isObj } from '../utils/type';
 
 interface IWaiter {
     uuid?: string;

@@ -1,7 +1,7 @@
 /**
- * 浏览器兼容性
+ * 平台兼容性
  */
-export const browserPolyfill = function () {
+export const platformPolyfill = function () {
     (function (global) {
         /**
          * 兼容atob、btoa方法

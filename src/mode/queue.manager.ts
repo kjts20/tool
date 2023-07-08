@@ -1,10 +1,11 @@
 /*
- * @Author: wkj
- * @Date: 2022-04-25 15:06:13
+ * @Author: wkj（wkj.kjwoo.cn）
+ * @Date: 2022-12-07 22:24:31
+ * @LastEditTime: 2023-07-08 12:45:38
  * @Description: 队列管理器
  */
-import { generateRandomStr } from '../string';
-import { isArr, isNum, isObj, isUndefined } from '../type';
+import { generateRandomStr } from '../utils/string';
+import { isArr, isNum, isObj, isUndefined } from '../utils/type';
 
 // 消费者options对象
 export interface IConsumerProps {

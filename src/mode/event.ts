@@ -1,8 +1,8 @@
 /**
  * 多事件订阅发布
  */
-import { generateRandomStr } from '../string';
-import { isFunc, isObj } from '../type';
+import { generateRandomStr } from '../utils/string';
+import { isFunc, isObj } from '../utils/type';
 
 // 事件监听者字典
 interface IEventListenerDict {

@@ -1,14 +1,12 @@
 /*
  * @Author: wkj（wkj.kjwoo.cn）
  * @Date: 2023-04-21 18:32:54
- * @LastEditTime: 2023-07-08 11:44:10
+ * @LastEditTime: 2023-07-08 12:29:48
  * @Description: 字符串工具类
  */
-import { hexMD5 } from './lib/md5';
+import { letterLowerList, letterUpperList, numList } from '../constant/arrayConst';
+import { hexMD5 } from '../lib/md5';
 import { isFunc, isStr, isNum } from './type';
-
-// 全空格
-export const allSpace = '　';
 
 /**
  * 替换前后空格获取特定的字符串
@@ -42,27 +40,13 @@ export const md5 = function (str) {
     return hexMD5(str);
 };
 
-// 生成因子（a-zA-Z0-9）
-export const numSeed = '0'
-    .repeat(10)
-    .split('')
-    .map((_, i) => i);
-export const letterUpSeed = '0'
-    .repeat(26)
-    .split('')
-    .map((_, i) => String.fromCharCode(i + 65));
-export const letterLowSeed = '0'
-    .repeat(26)
-    .split('')
-    .map((_, i) => String.fromCharCode(i + 97));
-
 /**
  * 获取随机字符串
  * @param len 长度
  * @param seed
  * @returns
  */
-export const generateRandomStr = function (len = 7, seed = [...numSeed, ...letterUpSeed, ...letterLowSeed]) {
+export const generateRandomStr = function (len = 7, seed = [...numList, ...letterUpperList, ...letterLowerList]) {
     if (isNum(len) && len > 0) {
         var str = '';
         var seedLen = seed.length;
@@ -82,7 +66,7 @@ export const generateRandomStr = function (len = 7, seed = [...numSeed, ...lette
  * @param otherSeed 其他字母生成种子
  * @returns
  */
-export const genName = function (len = 5, firstSeed = ['$', '_', ...letterUpSeed, ...letterLowSeed], otherSeed?) {
+export const genName = function (len = 5, firstSeed = ['$', '_', ...letterUpperList, ...letterLowerList], otherSeed?) {
     if (isNum(len) && len > 1) {
         return generateRandomStr(1, firstSeed) + generateRandomStr(len - 1, otherSeed);
     } else {

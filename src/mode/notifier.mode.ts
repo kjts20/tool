@@ -1,14 +1,19 @@
+/*
+ * @Author: wkj（wkj.kjwoo.cn）
+ * @Date: 2022-12-07 22:24:31
+ * @LastEditTime: 2023-07-08 12:46:11
+ * @Description:
+ */
 /**
  * 监听听者模式
  *  场景：
  */
-import { generateRandomStr } from "../string";
-import { isFunc, isStr } from "../type";
-
+import { generateRandomStr } from '../utils/string';
+import { isFunc, isStr } from '../utils/type';
 
 export class Notifier {
     // 监听者
-    private _listenerList: { uuid: string, callback: Function, options?: object }[] = [];
+    private _listenerList: { uuid: string; callback: Function; options?: object }[] = [];
 
     // 添加监听者
     addListener(callback, options?) {
@@ -24,7 +29,7 @@ export class Notifier {
             console.error('监听者必须是一个函数：', callback);
             return null;
         }
-    };
+    }
 
     // 移除监听者
     removeListener(uuid) {
@@ -40,5 +45,5 @@ export class Notifier {
                 it.callback(...args, it.options);
             }
         });
-    };
+    }
 }

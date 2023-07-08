@@ -1,7 +1,7 @@
-import { isArr, isFunc, isNum, isObj, isStr } from '../type';
-import { mergeUrl } from '../url';
-import { trim } from '../string';
-import { removeObjectUndefined, toJson } from '../object';
+import { isArr, isFunc, isNum, isObj, isStr } from '../utils/type';
+import { removeObjectUndefined, toJson } from '../utils/object';
+import { mergeUrl } from '../utils/url';
+import { trim } from '../utils/string';
 
 // 获取请求头部
 const getHeader = function (...headers) {

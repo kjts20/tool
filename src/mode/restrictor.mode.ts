@@ -1,5 +1,5 @@
-import { generateRandomStr } from '../string';
-import { isObj } from '../type';
+import { generateRandomStr } from '../utils/string';
+import { isObj } from '../utils/type';
 
 interface INotifyer {
     uuid?: string;

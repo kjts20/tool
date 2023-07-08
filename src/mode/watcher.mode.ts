@@ -1,6 +1,11 @@
-import { isFunc, isNum } from '../type';
+/*
+ * @Author: wkj（wkj.kjwoo.cn）
+ * @Date: 2022-12-07 22:24:31
+ * @LastEditTime: 2023-07-08 12:45:00
+ * @Description: 观察者模式
+ */
+import { isFunc, isNum } from '../utils/type';
 
-// 观察者模式
 export class WatcherMode {
     // 通知对象
     private notifyer = (...args) => 0;

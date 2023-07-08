@@ -1,4 +1,4 @@
-import { isArr, isFunc, isStr, isUndefined } from '../type';
+import { isArr, isFunc, isStr, isUndefined } from '../utils/type';
 import { HttpResponse, IPageDataType } from './http-server';
 import { TErrFunc } from './type';
 

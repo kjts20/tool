@@ -1,4 +1,4 @@
-import { isNum, isStr } from '../type';
+import { isNum, isStr } from '../utils/type';
 import { TErrFunc } from './type';
 
 /**

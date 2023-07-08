@@ -5,5 +5,5 @@
  * @Description: 线程相关工具
  */
 export const sleep = function (ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 };
