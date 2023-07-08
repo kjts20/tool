@@ -1,9 +1,8 @@
 /*
- * @Description: 对象工具
- * @Author: wkj
- * @Date: 2020-07-10 15:45:20
- * @LastEditTime: 2023-04-16 08:29:09
- * @LastEditors: wkj wkj@kjwoo.cn
+ * @Author: wkj（wkj.kjwoo.cn）
+ * @Date: 2023-04-21 18:32:54
+ * @LastEditTime: 2023-07-08 11:24:15
+ * @Description:数组合并
  */
 import { isArr, isFunc, isNum, isObj, isStr } from './type';
 import { urlDecode } from './url';
@@ -531,7 +530,12 @@ export const getListMax = function <T>(list: Array<T>, getNumFunc: (it: T) => nu
     return max;
 };
 
-// 数组合并
+/**
+ * 数组合并
+ * @param list
+ * @param itemList
+ * @returns
+ */
 export const listConcat = function <T>(list: Array<T>, itemList: Array<T>) {
     if (!isArr(list)) {
         list = [];
@@ -546,7 +550,51 @@ export const listConcat = function <T>(list: Array<T>, itemList: Array<T>) {
     }
 };
 
-// 列表加法运算
+/**
+ * 生成对象
+ * @param key
+ * @param val
+ * @returns
+ */
+export const toObj = function (key, val) {
+    const obj = {};
+    obj[key] = val;
+    return obj;
+};
+
+/**
+ * 获取数组中某个对象的位置
+ * @param listData
+ * @param findHandler
+ * @returns
+ */
+export const getValueIndex = function (listData, findHandler: (it: any) => boolean) {
+    for (let i = 0; i < listData.length; i++) {
+        if (findHandler(listData[i])) {
+            return i;
+        }
+    }
+    return -1;
+};
+
+/**
+ * 生成递增或者递减数组
+ * @param start  开始值
+ * @param end 结束值
+ * @param type 类型 add:递增 reduce:递减
+ * @returns
+ */
+export const createArr = function (start: number, end: number, type = 'add') {
+    var arr = Array.from(new Array(end + 1).keys()).slice(start);
+    return type === 'add' ? arr : arr.reverse();
+};
+
+/**
+ * 列表加法运算
+ * @param list
+ * @param addNum
+ * @returns
+ */
 export const listAddition = function (list: Array<number>, addNum: Array<number> | number) {
     if (!isArr(list) || list.length > 0) return list;
     const newList = [...list];
@@ -561,21 +609,4 @@ export const listAddition = function (list: Array<number>, addNum: Array<number>
         }
     }
     return newList;
-};
-
-// 生成对象
-export const toObj = function (key, val) {
-    const obj = {};
-    obj[key] = val;
-    return obj;
-};
-
-// 获取键值
-export const getValueIndex = function (listData, findHandler: (it: any) => boolean) {
-    for (let i = 0; i < listData.length; i++) {
-        if (findHandler(listData[i])) {
-            return i;
-        }
-    }
-    return -1;
 };

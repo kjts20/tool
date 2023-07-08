@@ -1,16 +1,22 @@
 /*
- * @Description: 字符串工具
- * @Author: wkj
- * @Date: 2020-07-08 14:27:21
- * @LastEditTime: 2022-11-22 22:46:46
- * @LastEditors: wkj wkj@kjwoo.cn
+ * @Author: wkj（wkj.kjwoo.cn）
+ * @Date: 2023-04-21 18:32:54
+ * @LastEditTime: 2023-07-08 11:44:10
+ * @Description: 字符串工具类
  */
 import { hexMD5 } from './lib/md5';
-import { isFunc, isStr } from './type';
+import { isFunc, isStr, isNum } from './type';
+
 // 全空格
 export const allSpace = '　';
 
-//替换前后空格获取特定的字符串
+/**
+ * 替换前后空格获取特定的字符串
+ * @param str
+ * @param patternStr
+ * @param replaceStr
+ * @returns
+ */
 export const trim = function (str, patternStr = '\\s', replaceStr = '') {
     if (typeof str === 'string') {
         patternStr.replace(/\s+/, '') === '' && (patternStr = '\\s');
@@ -36,81 +42,88 @@ export const md5 = function (str) {
     return hexMD5(str);
 };
 
-//获取随机字符串
-export const generateRandomStr = function (len?) {
-    len = parseInt(len);
-    len = isNaN(len) || len <= 0 ? 7 : len;
-    var seed = [
-        'a',
-        'b',
-        'c',
-        'd',
-        'e',
-        'f',
-        'g',
-        'h',
-        'i',
-        'j',
-        'k',
-        'l',
-        'm',
-        'n',
-        'o',
-        'p',
-        'q',
-        'r',
-        's',
-        'q',
-        'u',
-        'v',
-        'w',
-        'y',
-        'z',
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9
-    ];
-    var str = '';
-    var seedLen = seed.length;
-    for (var i = 0; i < len; i++) {
-        str += seed[Math.floor(Math.random() * seedLen)];
+// 生成因子（a-zA-Z0-9）
+export const numSeed = '0'
+    .repeat(10)
+    .split('')
+    .map((_, i) => i);
+export const letterUpSeed = '0'
+    .repeat(26)
+    .split('')
+    .map((_, i) => String.fromCharCode(i + 65));
+export const letterLowSeed = '0'
+    .repeat(26)
+    .split('')
+    .map((_, i) => String.fromCharCode(i + 97));
+
+/**
+ * 获取随机字符串
+ * @param len 长度
+ * @param seed
+ * @returns
+ */
+export const generateRandomStr = function (len = 7, seed = [...numSeed, ...letterUpSeed, ...letterLowSeed]) {
+    if (isNum(len) && len > 0) {
+        var str = '';
+        var seedLen = seed.length;
+        for (var i = 0; i < len; i++) {
+            str += seed[Math.floor(Math.random() * seedLen)];
+        }
+        return str;
+    } else {
+        throw new Error('生成随机字符串错误，长度必须大于0');
     }
-    return str;
 };
 
-//获取UUID
+/**
+ * 生成命名
+ * @param len
+ * @param firstSeed 首字母生成种子
+ * @param otherSeed 其他字母生成种子
+ * @returns
+ */
+export const genName = function (len = 5, firstSeed = ['$', '_', ...letterUpSeed, ...letterLowSeed], otherSeed?) {
+    if (isNum(len) && len > 1) {
+        return generateRandomStr(1, firstSeed) + generateRandomStr(len - 1, otherSeed);
+    } else {
+        throw new Error('生成名字错误，长度必须大于1');
+    }
+};
+
+/**
+ * 获取UUID
+ * @returns
+ */
 export const generateUUID = function () {
     return generateUnique('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx');
 };
 
-//通过种子与编码位数获取UUID
+/**
+ * 通过种子与编码位数获取UUID
+ * @param seed
+ * @param codingBits
+ * @returns
+ */
 export const generateUnique = function (seed: number | string = 5, codingBits = 16) {
-    (typeof codingBits !== 'number' || codingBits < 2 || codingBits > 36) && (codingBits = 16);
-    if (typeof seed === 'number' && seed > 0) {
-        seed = 'x'.repeat(seed) + 'y';
-    } else if (typeof seed !== 'string' || seed.length < 2) {
-        seed = 'xxxxxxy';
-    }
-    var d = new Date().getTime();
-    // @ts-ignore
-    const performance: any = window.performance;
-    if (performance && isFunc(performance.now)) {
-        // use high-precision timer if available
-        d += performance.now();
-    }
-    var uuid = seed.replace(/[xy]/g, function (c) {
-        var r = (d + Math.random() * codingBits) % codingBits | 0;
-        d = Math.floor(d / codingBits);
-        return (c === 'x' ? r : (r & 0x3) | (codingBits / 2)).toString(codingBits);
-    });
-    return uuid;
+    return (function (global) {
+        (typeof codingBits !== 'number' || codingBits < 2 || codingBits > 36) && (codingBits = 16);
+        if (typeof seed === 'number' && seed > 0) {
+            seed = 'x'.repeat(seed) + 'y';
+        } else if (typeof seed !== 'string' || seed.length < 2) {
+            seed = 'xxxxxxy';
+        }
+        var d = new Date().getTime();
+        const performance: any = global.performance;
+        if (performance && isFunc(performance.now)) {
+            d += performance.now();
+        }
+        var uuid = seed.replace(/[xy]/g, function (c) {
+            var r = (d + Math.random() * codingBits) % codingBits | 0;
+            d = Math.floor(d / codingBits);
+            return (c === 'x' ? r : (r & 0x3) | (codingBits / 2)).toString(codingBits);
+        });
+        return uuid;
+    })(this || window || globalThis);
 };
 
 // 驼峰命名转烤串
@@ -194,61 +207,4 @@ export const camelToLine = function (str) {
     } else {
         return str;
     }
-};
-
-// 正则判断字符串格式(非空)
-const judgeFormat = function (str, re: RegExp): boolean {
-    if (isStr(str)) {
-        if (re && isFunc(re.test)) {
-            return re.test(trim(str));
-        } else {
-            console.error('无法校验格式=>', re, str);
-            throw new Error('正则错误，无法校验格式');
-        }
-    } else {
-        return false;
-    }
-};
-
-// 是否电子邮件
-export const isEmail = function (str) {
-    return judgeFormat(str, /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/);
-};
-
-// 判断是否为手机号
-export const isPhone = function (str) {
-    return judgeFormat(str, /^[1][3,4,5,7,8,9][0-9]{9}$/);
-};
-
-// 判断是否为电话号码
-export const isTel = function (str) {
-    return judgeFormat(str, /^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/);
-};
-
-// 判断是否URL格式
-export const isUrl = function (str) {
-    return judgeFormat(
-        str,
-        /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})).?)(?::\d{2,5})?(?:[/?#]\S*)?$/i
-    );
-};
-
-// 验证日期格式
-export const isDate = function (value) {
-    return !/Invalid|NaN/.test(new Date(value).toString());
-};
-
-// 日期格式校验
-export const isDateStr = function (str) {
-    return /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])\s+([0-5][0-9]):([0-5][0-9]):([0-5][0-9]).*?$/.test(str);
-};
-
-// 验证ISO类型的日期格式
-export const isDateISO = function (value) {
-    return /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.test(value);
-};
-
-// 验证身份证号码
-export const isIdcard = function (value) {
-    return /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(value);
 };

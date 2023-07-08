@@ -1,9 +1,8 @@
 /*
+ * @Author: wkj（wkj.kjwoo.cn）
+ * @Date: 2023-05-07 20:59:09
+ * @LastEditTime: 2023-07-08 10:46:45
  * @Description: 时间工具
- * @Author: wkj
- * @Date: 2020-07-07 11:42:45
- * @LastEditTime: 2022-11-10 21:08:26
- * @LastEditors: wkj wkj@kjwoo.cn
  */
 
 import { isNum, isStr } from './type';

@@ -3,6 +3,7 @@ export * from './core/http-filter';
 export * from './core/http-server';
 export * from './core/storage';
 export * from './core/store';
+export * from './core/polyfill';
 
 // 导出方法
 export * from './buffer';
@@ -21,6 +22,9 @@ export * from './type';
 export * from './url';
 export * from './validate';
 export * from './promise';
+export * from './assert';
+export * from './thread';
+
 // 设计模式
 export * from './mode/notifier.mode';
 export * from './mode/event';

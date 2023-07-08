@@ -1,31 +1,76 @@
 {
-    "less.compile": {
-        "outExt": false
-    },
-    "easysass.compileAfterSave": true,
-    "easysass.formats": [
-        {
-            "format": "compressed",
-            "extension": ".wxss"
-        }
-    ],
+    "editor.tabSize": 4,
+    "editor.rulers": [200],
     "editor.formatOnSave": true,
-    "editor.detectIndentation": false,
-    "javascript.format.enable": false,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    },
-    "editor.formatOnPaste": false,
-    "editor.formatOnType": true,
-    "files.autoSave": "onFocusChange",
-    "files.trimTrailingWhitespace": true,
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
+    "html.format.wrapAttributes": "force-aligned",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.trailingComma": "none",
+    "prettier.semi": true,
+    "prettier.tabWidth": 4,
+    "prettier.printWidth": 200,
+    "prettier.jsxSingleQuote": true,
+    "prettier.singleQuote": true,
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "[typescriptreact]": {
+    "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "editor.detectIndentation": false,
+    "[scss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    // 注释配置相关
+    // 头部注释
+    "fileheader.customMade": {
+        "Author": "git config user.name（git config user.email）",
+        "Date": "Do not edit",
+        "LastEditTime": "Do not edit",
+        "Description": ""
+    },
+    // 函数注释
+    "fileheader.cursorMode": {
+        "description": "",
+        "param": "",
+        "return": ""
+    },
+    // 注释插件配置项
+    "fileheader.configObj": {
+        // 自动添加注释
+        "autoAdd": true,
+        // 自动添加函数行数
+        "autoAddLine": 100,
+        // 禁止的文件
+        "prohibitAutoAdd": ["json", "md", "html", "css", "sass", "less", "wxml", "wxss", "d.ts"],
+        // 禁止目录列表
+        "folderBlacklist": ["node_modules", ".vscode", "cli"],
+        // 自动移动光标到Description所在行
+        "moveCursor": true,
+        // 日期格式化
+        "dateFormat": "YYYY-MM-DD HH:mm:ss"
+    },
+    // 微信小程序相关的配置
+    "[wxml]": {
+        "editor.defaultFormatter": "wechat.miniprogram.wxml-language-features"
+    },
+    "wxml.format.wrapAttributes": "auto",
+    "wxml.format.wrapAttributes": "preserve-aligned",
+    // 编译相关配置
+    "less.compile": {
+        "outExt": false
+    },
+    "easysass.compileAfterSave": false,
+    "easysass.formats": [
+        {
+            "format1": "compressed",
+            "format": "expanded",
+            "extension": ".wxss"
+        }
+    ]
 }

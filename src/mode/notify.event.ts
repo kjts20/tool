@@ -1,7 +1,7 @@
 /**
  * 多事件订阅发布
  */
-import { isArr, isFunc, isStr } from "../type";
+import { isArr, isFunc, isStr } from '../type';
 
 /**
  * @deprecated
@@ -29,7 +29,7 @@ export class NotifyEvent {
                     this._eventListenerDict[event] = [];
                 } else {
                     if (this._eventListenerDict[event].filter(it => it === listener).length > 0) {
-                        console.warn('该方法已经监听过了，无需重复监听', event)
+                        console.warn('该方法已经监听过了，无需重复监听', event);
                         return false;
                     }
                 }
@@ -58,7 +58,7 @@ export class NotifyEvent {
                     try {
                         listener(...args);
                     } catch (err) {
-                        console.error("函数=>", listener, '错误=>', err);
+                        console.error('函数=>', listener, '错误=>', err);
                     }
                 }
             }
@@ -89,5 +89,3 @@ export class NotifyEvent {
         }
     }
 }
-
-

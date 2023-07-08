@@ -1,7 +1,19 @@
+/*
+ * @Author: wkj（wkj.kjwoo.cn）
+ * @Date: 2022-12-07 22:24:31
+ * @LastEditTime: 2023-07-08 11:24:36
+ * @Description: 正则工具
+ */
+
 // 单标签
 const sigleHtmlTag = ['img', 'link', 'hr', 'br', 'input'];
 
-// 替换空格
+/**
+ * 替换空格
+ * @param str
+ * @param replaceText
+ * @returns
+ */
 export const replaceSpace = function (str, replaceText = '&ensp;') {
     // 处理单标签（严格模式）
     let goal = str.replace(/<[a-z0-9-]+.*?\/>/gi, $0 => encodeURIComponent($0));

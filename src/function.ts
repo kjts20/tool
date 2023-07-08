@@ -1,9 +1,8 @@
 /*
+ * @Author: wkj（wkj.kjwoo.cn）
+ * @Date: 2023-04-21 18:32:54
+ * @LastEditTime: 2023-07-08 10:40:44
  * @Description: 转换为函数
- * @Author: wkj
- * @Date: 2020-09-24 17:50:43
- * @LastEditTime: 2023-04-15 08:50:54
- * @LastEditors: wkj wkj@kjwoo.cn
  */
 import { isObj } from './type';
 

@@ -1,11 +1,11 @@
-import { generateRandomStr } from "../string";
-import { isObj } from "../type";
+import { generateRandomStr } from '../string';
+import { isObj } from '../type';
 
 interface INotifyer {
-    uuid?: string,
-    callback: Function,
-    options?: Object
-};
+    uuid?: string;
+    callback: Function;
+    options?: Object;
+}
 
 // 限流器
 export class RestrictorMode {
@@ -61,9 +61,12 @@ export class RestrictorMode {
         this.messages = null;
         clearInterval(this.timer);
         if (isSendData === true) {
-            this.trySendMessage({
-                stop: true
-            }, []);
+            this.trySendMessage(
+                {
+                    stop: true
+                },
+                []
+            );
         }
     }
 
@@ -76,10 +79,14 @@ export class RestrictorMode {
                 for (const uuid in this.notifyers) {
                     const it = this.notifyers[uuid];
                     if (typeof it === 'object' && it !== null && typeof it.callback === 'function') {
-                        it.callback({
-                            interval: this.time,
-                            ...(isObj(options) ? options : {}),
-                        }, ...messages, it.options);
+                        it.callback(
+                            {
+                                interval: this.time,
+                                ...(isObj(options) ? options : {})
+                            },
+                            ...messages,
+                            it.options
+                        );
                     }
                 }
             }

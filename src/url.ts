@@ -1,10 +1,10 @@
 /*
+ * @Author: wkj（wkj.kjwoo.cn）
+ * @Date: 2023-04-21 18:25:49
+ * @LastEditTime: 2023-07-08 10:47:32
  * @Description: 工具类：url相关的工具
- * @Author: wkj
- * @Date: 2019-11-04 13:18:05
- * @LastEditTime: 2022-11-18 11:06:18
- * @LastEditors: wkj wkj@kjwoo.cn
  */
+
 import { isStr } from './type';
 
 //请求字符串转换对象
@@ -13,7 +13,7 @@ export const requestStr2Obj = function (requestUrl, valAutoDecode = true) {
     requestUrl = requestUrl.replace(/^.*?\?(.*?)$/, '$1');
     var requestArr = requestUrl.split('&');
     var valueRe = /^([a-zA-Z0-9\_\_]+)=(.*?)$/;
-    var paramsObj:{[key:string]: any} = {};
+    var paramsObj: { [key: string]: any } = {};
     //查看类型进行转为相应的值
     const val2Real = val => {
         let intRe = /^\d+$/,

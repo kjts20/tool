@@ -1,5 +1,62 @@
-import { isDate, isDateStr, isEmail, isIdcard, isPhone, isUrl } from './string';
-import { isArr, isFunc, isNum, isObj, isStr, isUndefined, getLen } from './type';
+import { trim } from './string';
+import { isArr, isFunc, isNum, isObj, isStr, isUndefined } from './type';
+
+// 正则判断字符串格式(非空)
+const judgeFormat = function (str, re: RegExp): boolean {
+    if (isStr(str)) {
+        if (re && isFunc(re.test)) {
+            return re.test(trim(str));
+        } else {
+            console.error('无法校验格式=>', re, str);
+            throw new Error('正则错误，无法校验格式');
+        }
+    } else {
+        return false;
+    }
+};
+
+// 是否电子邮件
+export const isEmail = function (str) {
+    return judgeFormat(str, /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/);
+};
+
+// 判断是否为手机号
+export const isPhone = function (str) {
+    return judgeFormat(str, /^[1][3,4,5,7,8,9][0-9]{9}$/);
+};
+
+// 判断是否为电话号码
+export const isTel = function (str) {
+    return judgeFormat(str, /^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/);
+};
+
+// 判断是否URL格式
+export const isUrl = function (str) {
+    return judgeFormat(
+        str,
+        /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})).?)(?::\d{2,5})?(?:[/?#]\S*)?$/i
+    );
+};
+
+// 验证日期格式
+export const isDate = function (value) {
+    return !/Invalid|NaN/.test(new Date(value).toString());
+};
+
+// 日期格式校验
+export const isDateStr = function (str) {
+    return /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])\s+([0-5][0-9]):([0-5][0-9]):([0-5][0-9]).*?$/.test(str);
+};
+
+// 验证ISO类型的日期格式
+export const isDateISO = function (value) {
+    return /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.test(value);
+};
+
+// 验证身份证号码
+export const isIdcard = function (value) {
+    return /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(value);
+};
 
 // 对象类型
 export interface IObject {

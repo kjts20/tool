@@ -1,4 +1,4 @@
-import { isFunc, isNum } from "../type";
+import { isFunc, isNum } from '../type';
 
 // 观察者模式
 export class WatcherMode {
@@ -30,9 +30,9 @@ export class WatcherMode {
         this.stop();
         this.watcherTimer = setTimeout(() => {
             if (isFunc(this.notifyer)) {
-                this.notifyer(...args)
+                this.notifyer(...args);
             } else {
-                console.error('通知错误：通知人不合法=>', this.notifyer)
+                console.error('通知错误：通知人不合法=>', this.notifyer);
             }
         }, this.watchTime);
         return this;
@@ -63,9 +63,9 @@ export class WatcherMode {
     // 通知长按
     private notifyLongPress(...args) {
         if (isFunc(this.notifyer)) {
-            this.notifyer(...args)
+            this.notifyer(...args);
         } else {
-            console.error('通知错误：通知人不合法=>', this.notifyer)
+            console.error('通知错误：通知人不合法=>', this.notifyer);
         }
     }
 }
