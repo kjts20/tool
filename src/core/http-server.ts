@@ -26,6 +26,7 @@ export interface IResponse<DataType = any> {
     errcode: 0 | 1;
     code: number;
     data: DataType;
+    other?: any;
 }
 
 // 请求状态
@@ -58,9 +59,13 @@ export const unifiedResponse = function (response?: IResponse) {
             msg: '系统错误'
         };
     }
-    const { code, errcode, msg } = response;
+    const { code, errcode, msg, data, ...other } = response;
     const httpResponse: HttpResponse = {
-        ...response,
+        other,
+        msg,
+        errcode,
+        code,
+        data,
         success: true,
         fail: false,
         error: false,
@@ -90,12 +95,13 @@ export const unifiedResponse = function (response?: IResponse) {
             httpResponse.code = 500;
         }
     } else {
+        httpResponse.code = 650;
         httpResponse.success = false;
         httpResponse.fail = false;
         httpResponse.error = true;
-        httpResponse.msg = '返回格式不正确';
+        httpResponse.msg = '返回格式无法识别';
     }
-    if (!isStr(msg)) {
+    if (!isStr(httpResponse.msg)) {
         httpResponse.msg = httpResponse.error ? '系统错误' : httpResponse.success ? 'success' : '失败';
     }
     return httpResponse;
