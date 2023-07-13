@@ -1,15 +1,16 @@
 /*
  * @Author: wkj（wkj.kjwoo.cn）
  * @Date: 2023-03-28 00:57:35
- * @LastEditTime: 2023-07-08 12:15:03
+ * @LastEditTime: 2023-07-13 07:48:06
  * @Description: 断言方法
  */
 import { isObj } from '../utils/type';
+
 export const Assert = {
-    isTrue(expression, msg, ...args) {
+    isTrue(expression, msg, err?, ...args) {
         if (!expression) {
-            console.error(`[${msg}]=>`, ...args);
-            throw new Error(msg);
+            console.error(`[${msg}]=>`, err, ...args);
+            throw { msg, err };
         }
     },
     isFalse(expression, msg, ...args) {
